@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="@Url.Content("~/Content/themes/Blitzer/jquery-ui.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/pnotify.custom.min.css")" rel="stylesheet" />
+
+></head>
+<body>
+    <div style="border:solid 1px #cccccc;">
+        @Html.Partial("_Menu")
+    </div>
+    @RenderBody()
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/Common")
+    <script src="@Url.Content("~/Scripts/pnotify.custom.min.js")"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

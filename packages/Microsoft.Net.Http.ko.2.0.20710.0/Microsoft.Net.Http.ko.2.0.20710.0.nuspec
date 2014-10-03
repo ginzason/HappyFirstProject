@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.Net.Http.ko</id>
+    <version>2.0.20710.0</version>
+    <title>Microsoft .NET Framework 4 HTTP Client Libraries 한국어 리소스</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <licenseUrl>http://www.microsoft.com/web/webpi/eula/MVC_4_KOR.htm</licenseUrl>
+    <projectUrl>http://www.asp.net/web-api</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>이 패키지에는 Microsoft .NET Framework 4 HTTP Client Libraries용 한국어 위성 어셈블리가 포함되어 있습니다.</description>
+    <summary>Microsoft.Net.Http 패키지용 한국어 리소스</summary>
+    <language>ko</language>
+    <dependencies>
+      <dependency id="Microsoft.Net.Http" version="[2.0.20710.0]" />
+    </dependencies>
+  </metadata>
+</package>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.AspNet.Providers.Core.ko</id>
+    <version>1.2</version>
+    <title>Microsoft ASP.NET Universal Providers 핵심 라이브러리 한국어 리소스</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <licenseUrl>http://www.microsoft.com/web/webpi/eula/Providers_1_eula_KOR.htm</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>이 패키지에는 ASP.NET Universal Providers에 대한 한국어 위성 어셈블리가 포함되어 있습니다.</description>
+    <summary>Microsoft.AspNet.Providers.Core 패키지에 대한 한국어 리소스</summary>
+    <language>ko</language>
+    <dependencies>
+      <dependency id="Microsoft.AspNet.Providers.Core" version="[1.2]" />
+    </dependencies>
+  </metadata>
+</package>

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.AspNet.WebPages.ko</id>
+    <version>2.0.30506.0</version>
+    <title>Microsoft ASP.NET Web Pages 2 한국어 리소스</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <licenseUrl>http://www.microsoft.com/web/webpi/eula/WebPages_2_eula_KOR.htm</licenseUrl>
+    <projectUrl>http://www.asp.net/web-pages</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>이 패키지에는 ASP.NET Web Pages 2용 한국어 위성 어셈블리가 포함되어 있습니다.</description>
+    <summary>Microsoft.AspNet.WebPages 패키지용 한국어 리소스</summary>
+    <language>ko</language>
+    <tags>Microsoft AspNet WebPages AspNetWebPages</tags>
+    <dependencies>
+      <dependency id="Microsoft.AspNet.WebPages" version="[2.0.30506.0]" />
+    </dependencies>
+  </metadata>
+</package>

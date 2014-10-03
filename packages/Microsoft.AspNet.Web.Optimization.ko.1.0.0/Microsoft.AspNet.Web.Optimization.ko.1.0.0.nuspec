@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.AspNet.Web.Optimization.ko</id>
+    <version>1.0.0</version>
+    <title>Microsoft ASP.NET Web Optimization 한국어 리소스</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <licenseUrl>http://www.microsoft.com/web/webpi/eula/weboptimization_1_eula_KOR.htm</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>이 패키지에는 ASP.NET Web Optimization에 대한 한국어 위성 어셈블리가 포함되어 있습니다.</description>
+    <summary>Microsoft.AspNet.Web.Optimization 패키지에 대한 한국어 리소스</summary>
+    <language>ko</language>
+    <tags>Microsoft AspNet optimization bundling minification</tags>
+    <dependencies>
+      <dependency id="Microsoft.AspNet.Web.Optimization" version="[1.0.0]" />
+    </dependencies>
+  </metadata>
+</package>

@@ -1,0 +1,202 @@
+﻿@model List<Happy.Mis.Models.UserMenu> 
+@{
+    Layout = "~/Views/Shared/_SystemLayout.cshtml";
+}
+<div class="row" style="margin-bottom:10px; text-align:right;">
+    <button type="button" class="btn btn-primary" id="btnCreate"><span class="glyphicon glyphicon-pencil"></span> Create</button>
+</div>
+<div class="row">
+    <table class="table table-bordered">
+        <tr>
+            <th style="width: 35%; text-align:center;">Menu Name</th>
+            <th style="width: 35%; text-align: center;">Menu Url</th>
+            <th style="width: 20%; text-align: center;">Page Name</th>
+            <th style="width: 10%; text-align: center;">Sort No.</th>
+        </tr>
+        @if (Model != null)
+        {
+            foreach (var menuTop in Model.Where(x => x.parent_idx == 0).OrderBy(x => x.sort_order))
+            {
+                <tr onclick="Page.RowClick(@menuTop.menu_idx, this)" style="cursor:pointer;">
+                    <td class="warning">
+                        @menuTop.menu_name
+                        <input type="hidden" name="hidPidx" value="@menuTop.parent_idx" />
+                        <input type="hidden" name="hidMIdx" value="@menuTop.menu_idx" />
+                    </td>
+                    <td>
+                        @menuTop.menu_url
+                    </td>
+                    <td>
+                        @menuTop.page_url
+                    </td>
+                    <td style="text-align:right;">
+                        @menuTop.sort_order
+                    </td>
+                </tr>
+                foreach (var menuBottom in Model.Where(x => x.parent_idx == menuTop.menu_idx).OrderBy(x => x.sort_order))
+                {
+                    <tr onclick="Page.RowClick(@menuBottom.menu_idx, this)" style="cursor:pointer;">
+                        <td>
+                            &nbsp;&nbsp;&nbsp;&nbsp; @menuBottom.menu_name
+                            <input type="hidden" name="hidPidx" value="@menuBottom.parent_idx" />
+                            <input type="hidden" name="hidMIdx" value="@menuBottom.menu_idx" />
+                        </td>
+                        <td>
+                            @menuBottom.menu_url
+                        </td>
+                        <td>
+                            @menuBottom.page_url
+                        </td>
+                        <td style="text-align:right;">
+                            @menuBottom.sort_order
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </table>
+</div>
+<div class="modal fade bs-example-modal-lg" id="editModal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-disMiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 id="mtitle" class="modal-title">Menu Create</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group" id="divParentMenu">
+                         <label for="txtParent">Parent Menu</label><br />
+                        @if (Model != null)
+                        {
+                            <div class="btn-group">
+                                @foreach (var menuTop in Model.Where(x => x.parent_idx == 0).OrderBy(x => x.sort_order))
+                                {
+                                <button type="button" class="btn btn-default" onclick="Page.ToggleButtonClick(@menuTop.menu_idx, '@menuTop.menu_name')">@menuTop.menu_name</button>
+                                }
+                            </div>
+                        }
+                        <br />
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="ckTop"> 최상의 메뉴
+                            </label>
+                        </div>
+                        <input type="text" class="form-control " id="txtParent" placeholder="선택하세요." role="txtT" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtName">Menu Name</label>
+                        <input type="text" class="form-control" id="txtName" placeholder="Menu Name" role="txtT">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtMenuUrl">Menu Url</label>
+                        <input type="text" class="form-control" id="txtMenuUrl" placeholder="Menu Url" role="txtT">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtPagename">Page Name</label>
+                        <input type="text" class="form-control" id="txtPagename" placeholder="Page Name" role="txtT">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtSort">Sort No.</label>
+                        <input type="text" class="form-control" id="txtSort" placeholder="Page Name" role="txtT">
+                    </div>
+                    <input type="hidden" id="hidIdx" value="0" />
+                    <input type="hidden" id="hidParent" role="txtT" />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="btnDelete"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+                <button type="button" class="btn btn-primary" id="btnSave"><span class="glyphicon glyphicon-pencil"></span> Save</button>
+                <button type="button" class="btn btn-default" data-disMiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $("#btnCreate").click(function () {
+                Page.Create();
+            });
+            $("#btnDelete").click(function () {
+                Page.Delete();
+            });
+            $("#btnSave").click(function () {
+                Page.Save();
+            });
+            $("#ckTop").click(function () {
+                $("#txtParent").val("최상위 메뉴");
+                $("#hidParent").val("0");
+            });
+        });
+        var Page = {
+            Create : function(){
+                $("[role='txtT']").val("");
+                $("#hidIdx").val("0");
+                $("#mtitle").val("Menu Create");
+                $("#btnDelete").hide();
+                $("#divParentMenu").show();
+                $('#editModal').modal();
+            },
+            RowClick: function (menu_idx, e) {
+                var menu_name = $(e).children("td").eq(0).text().trim();
+                var menu_url = $(e).children("td").eq(1).text().trim();
+                var page_name = $(e).children("td").eq(2).text().trim();
+                var sort_order = $(e).children("td").eq(3).text().trim();
+                var parent_idx = $(e).children("td").eq(0).children('[name="hidPidx"]').val();
+                $("#hidIdx").val(menu_idx);
+                $("#txtName").val(menu_name);
+                $("#hidParent").val(parent_idx);
+                $("#txtMenuUrl").val(menu_url);
+                $("#txtPagename").val(page_name);
+                $("#txtSort").val(sort_order);
+                $("#mtitle").val("Menu Edit");
+                $("#btnDelete").show();
+                $("#divParentMenu").hide();
+                $('#editModal').modal();
+            },
+            ToggleButtonClick: function (parent_idx, name) {
+                $("#txtParent").val(name);
+                $("#hidParent").val(parent_idx);
+            },
+            Delete: function () {
+                var menu_idx = $("#hidIdx").val();
+                var result = Utill.Ajax("@Url.Action("MenuDelete")", { menu_idx: menu_idx });
+                if (result > 0) {
+                    Utill.Alert("삭제 성공", "S");
+                    Page.DeleteRow(menu_idx);
+                    $("[role='txtT']").val("");
+                    $("#editModal").modal('hide');
+                }
+                else {
+                    Utill.Alert("삭제 실패", "E");
+                }
+            },
+            DeleteRow: function (menu_idx) {
+                var tr = $("table").children("tbody").children("tr");
+                tr.each(function () {
+                    var rowIdx = $(this).children("td").eq(0).children("[name='hidMIdx']").val();
+                    if (rowIdx == menu_idx) {
+                        $(this).remove();
+                    }
+                });
+            },
+            Save: function () {
+                var menu_idx = $("#hidIdx").val();
+                var parent_idx = $("#hidParent").val();
+                var menu_name = $("#txtName").val();
+                var menu_url = $("#txtMenuUrl").val();
+                var page_name = $("#txtPagename").val();
+                var sort_order = $("#txtSort").val();
+                var result = Utill.Ajax("@Url.Action("MenuSave")", {menu_idx: menu_idx, parent_idx: parent_idx, menu_name: menu_name, menu_url: menu_url, page_name: page_name, sort_order: sort_order});
+                if (result > 0) {
+                    location.href = "@Url.Action("Menu")";
+                }
+                else {
+                    Utill.Alert("저장 실패", "E");
+                }
+            }
+        }
+    </script>    
+}

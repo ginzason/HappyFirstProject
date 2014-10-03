@@ -1,0 +1,174 @@
+﻿@model List<Happy.Mis.Models.ComCodeInfo>
+@{
+    Layout = "~/Views/Shared/_SystemLayout.cshtml";
+}
+<div class="row">
+    <div class="col-xs-6">
+        카테고리 :
+        <select id="selCategory">
+            <option value="0">전체</option>
+        </select>
+    </div>
+    <div class="col-xs-6">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="카테고리저장" id="txtCatName" />
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button" id="btnCateAdd">저장</button>
+            </span>
+        </div>
+    </div>
+</div>
+<div class="row" style="margin: 10px 5px 0 10px; text-align:right;">
+    <button type="button" class="btn btn-primary" id="btnAdd"><span class="glyphicon glyphicon-pencil"></span> 추가</button>
+</div>
+<div class="row" style="margin: 10px 10px 0 10px;">
+    <table class="table table-bordered" id="tbCode">
+        <thead>
+            <tr>
+                <th style="width:10%; text-align:center;">코드아이디</th>
+                <th style="width:40%; text-align:center;">코드명</th>
+                <th style="width:40%; text-align:center;">코드설명</th>
+                <th style="width:10%;">&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="editModal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 id="mtitle" class="modal-title">공통코드생성</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="txtName">코드명</label>
+                        <input type="text" class="form-control" id="txtName" placeholder="코드명 입력">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtMenuUrl">설명</label>
+                        <input type="text" class="form-control" id="txtDesc" placeholder="설명 입력">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnSave"><span class="glyphicon glyphicon-pencil"></span> Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+ @section scripts{
+    <script type="text/javascript">
+    $(function () {
+        Page.CreateCaegory();
+        Page.CreateCode();
+        $("#selCategory").change(function () {
+            Page.CreateCode();
+        });
+        $("#btnAdd").click(function () {
+            Page.OpenModal();
+        });
+        $("#btnCateAdd").click(function () {
+            Page.CategorySave();
+        });
+        $("#btnSave").click(function () {
+            Page.CodeSave();
+        });
+    });
+    var Page = {
+        CreateCaegory: function () {
+            var data = Utill.Ajax("@Url.Action("ComCodeCategory")", null);
+            var html = "<option value='0'>전체</option>";
+            $.each(data, function (key, value) {
+                html += "<option value='" + value.cat_idx + "'>" + value.cat_name + "</option>";
+            });
+            $("#selCategory > option").remove();
+            $("#selCategory").append(html);
+        },
+        CreateCode: function () {
+            var data = Utill.Ajax("@Url.Action("ComCodeMaster")", { cat_idx: $("#selCategory").val() });
+            var html = '';
+            $.each(data, function (key, value) {
+                html += "<tr>";
+                html += "<td>";
+                html += value.code_idx;
+                html += "</td>";
+                html += "<td>";
+                html += "<input class=\"form-control\" type='text' value='" + value.code_name + "' />";
+                html += "</td>";
+                html += "<td>";
+                html += "<input class=\"form-control\" type='text' value='" + value.code_desc + "' />";
+                html += "</td>";
+                html += "<td style='text-align:center;'>";
+                html += "<button type=\"button\" class=\"btn btn-warning\" onclick='Page.CodeEdit(this);'><span class=\"glyphicon glyphicon-cog\"></span> 수정</button> &nbsp;";
+                html += "<button type=\"button\" class=\"btn btn-danger\" onclick='Page.CodeDelete(this);'><span class=\"glyphicon glyphicon-trash\"></span> 삭제</button>";
+                html += "</td>";
+                html += "</tr>";
+            });
+            $("#tbCode > tbody > tr").remove();
+            $("#tbCode > tbody").append(html);
+        },
+        CategorySave: function () {
+            var result = Utill.Ajax("@Url.Action("CategorySave")", { cat_name: $("#txtCatName").val() });
+            if (result > 0) {
+                Page.CreateCaegory();
+            }
+            else {
+                Utill.Alert("저장 실패", "E");
+            }
+        },
+        OpenModal : function(){
+            if ($("#selCategory").val() == "0") {
+                Utill.Alert("카테고리 선택하여야함.", "I");
+                $("#editModal").modal('hide');
+                return false;
+            }
+            else {
+                $('#editModal').modal();
+            }
+        },
+        CodeSave: function () {
+            var result = Utill.Ajax("@Url.Action("ComCodeSave")", { cat_idx: $("#selCategory").val(), code_name: $("#txtName").val(), code_desc : $("#txtDesc").val() });
+            if (result > 0) {
+                Page.CreateCode();
+                $("#editModal").modal('hide');
+                $("#txtName").val('');
+                $("#txtDesc").val('');
+            }
+            else {
+                Utill.Alert("저장 실패", "E");
+            }
+        },
+        CodeEdit: function (e) {
+            var tr = $(e).parent().parent();
+            var cat_idx = $("#selCategory").val();
+            var code_idx = tr.children("td").eq(0).text();
+            var code_name = tr.children("td").eq(1).children("input").val();
+            var code_desc = tr.children("td").eq(2).children("input").val();
+            var result = Utill.Ajax("@Url.Action("ComCodeEdit")", {code_idx: code_idx, cat_idx: cat_idx, code_name: code_name, code_desc: code_desc });
+            if (result > 0) {
+                Page.CreateCode();
+            }
+            else {
+                Utill.Alert("수정 실패", "E");
+            }
+        },
+        CodeDelete: function (e) {
+            var tr = $(e).parent().parent();
+            var code_idx = tr.children("td").eq(0).text();
+            var result = Utill.Ajax("@Url.Action("ComCodeDelete")", {code_idx: code_idx });
+            if (result > 0) {
+                Page.CreateCode();
+            }
+            else {
+                Utill.Alert("삭제 실패", "E");
+            }
+        }
+    };
+    </script>
+}

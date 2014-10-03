@@ -1,0 +1,41 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div>
+        <input type="checkbox" id="ckA" />
+    </div>
+    <br />
+    <div>
+        <input type="checkbox" name="aaa" />
+        <input type="checkbox" name="aaa" />
+        <input type="checkbox" name="aaa" />
+        <input type="checkbox" name="aaa" />
+        <input type="checkbox" name="aaa" />
+        <input type="checkbox" name="aaa" />
+    </div>
+    <script src="@Url.Content("~/Scripts/jquery-1.9.0.min.js")"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#ckA").click(function () {
+                var isChecked = $("#ckA:checked").length > 0 ? true : false;
+                if (isChecked) {
+                    $("input:checkbox").prop("checked", true);
+                }
+                else {
+                    $("input:checkbox").prop("checked", false);
+                    //$("input:checkbox").removeAttr("checked");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
