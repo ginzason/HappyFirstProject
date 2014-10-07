@@ -100,7 +100,7 @@ namespace Happy.Mis.Controllers
             context.HttpContext.Response.Clear();
             context.HttpContext.Response.AddHeader("content-disposition", "attachment; filename=" + FileName);
             context.HttpContext.Response.ContentType = "application/unknown";   // 모든 파일 강제 다운로드
-            context.HttpContext.Response.WriteFile(context.HttpContext.Server.MapPath(Path));
+            context.HttpContext.Response.WriteFile(Path);
         }
     }
 }
