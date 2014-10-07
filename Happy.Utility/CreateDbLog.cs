@@ -71,7 +71,7 @@ namespace Happy.Utility
             }
         }
 
-        public void FileUplodLog(string fileName, string originName, string path)
+        public void FileUplodLog(string fileName, string originName, string path, string result)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("\r\n-------------------------------------------------------------------------\r\n");
@@ -79,6 +79,7 @@ namespace Happy.Utility
             sb.Append(string.Format("Original File Name : {0}\r\n", originName));
             sb.Append(string.Format("Replace File Name : {0}\r\n", fileName));
             sb.Append(string.Format("Path : {0}\r\n", path));
+            sb.Append(string.Format("Result : {0}\r\n", result));
             string FilePath = HttpContext.Current.Request.MapPath("/log/fileUplodLog/") + DateTime.Now.ToShortDateString().Replace("-", "") + ".log";
             string DirPath = HttpContext.Current.Request.MapPath("/log/fileUplodLog/");
             string temp;

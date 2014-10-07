@@ -22,10 +22,12 @@ namespace Happy.Mis.Controllers
         }
         public DownloadResult FileDownload()
         {
+            string path = WebUtill.GetAppSetting("FtpDir");
+            string filename = "2014100713103764.xlsx";
             return new DownloadResult
             {
-                FileName = "aaa.txt",
-                Path = "/Upload/점태그.txt"
+                FileName = "파일.xlsx",
+                Path = path + filename
             };
         }
 

@@ -159,5 +159,33 @@ namespace Happy.Utility
             }
             return returnTx;
         }
+        /// <summary>
+        /// 라이센스파일 업로드
+        /// </summary>
+        /// <param name="file">파일객체</param>
+        /// <returns>성공여부</returns>
+        public static bool LicenseFileUpload(HttpPostedFileBase file)
+        {
+            bool isSucess = false;
+            string path = WebUtill.GetAppSetting("FtpDir");
+            string fileRename = string.Format("{0}", DateTime.Now.ToString("yyyyMMddHHmmssff"));
+            string[] arrOrigin = file.FileName.Split('.');
+            string rename = string.Format("{0}.{1}", fileRename, arrOrigin[arrOrigin.Length - 1]);
+
+            try
+            {
+                if (file != null && file.ContentLength > 0)
+                {
+                    file.SaveAs(path + rename);
+                    new CreateLog().FileUplodLog(rename, file.FileName, path, "success");
+                    isSucess = true;
+                }
+            }
+            catch(Exception ex)
+            {
+                new CreateLog().FileUplodLog(rename, file.FileName, path, "fail");
+            }
+            return isSucess;
+        }
     }
 }
