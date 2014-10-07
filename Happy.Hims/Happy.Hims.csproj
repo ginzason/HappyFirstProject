@@ -254,6 +254,9 @@
     <Content Include="Views\Test\FaceBook.cshtml" />
     <Content Include="Views\Test\Index.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\User\Deny.cshtml" />
+    <Content Include="Views\User\SetAuth.cshtml" />
+    <Content Include="Views\Test\FtpUpload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

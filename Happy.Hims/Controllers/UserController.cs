@@ -23,6 +23,7 @@ namespace Happy.Mis.Controllers
             ViewBag.ss = Security.RsaEncription("1111");
             return View();
         }
+        [HttpPost]
         public JsonResult LoginProc(string id= "", string pwd = "")
         {
             int count = 0;
@@ -82,24 +83,31 @@ namespace Happy.Mis.Controllers
         private void InsertLoginHistory(string id, string result)
         {
             string ip = Request.UserHostAddress == "::1" ? "127.0.0.1" : Request.UserHostAddress;
-            string mac = GetMacAddress(ip);
-            new Dac_Mis_LoginHis().Insert_Login_His(id, result, mac, ip);
+            new Dac_Mis_LoginHis().Insert_Login_His(id, result, "", ip);
         }
 
-        public string GetMacAddress(string ip)
+        public ActionResult Deny()
         {
-            string rtn = string.Empty;
-            ObjectQuery oq = new System.Management.ObjectQuery("SELECT * FROM Win32_NetworkAdapterConfiguration WHERE IPEnabled='TRUE'");
-            ManagementObjectSearcher query1 = new ManagementObjectSearcher(oq);
-            foreach (ManagementObject mo in query1.Get())
+            return View();
+        }
+        
+        public ViewResult SetAuth()
+        {
+            return View();
+        }
+        [HttpPost]
+        public JsonResult authProc(string pwd="")
+        {
+            string result = "F";
+            if(pwd.Trim() == "happyQwe123!@#")
             {
-                string[] address = (string[])mo["IPAddress"];
-                if (address.Length  == 2)
-                {
-                    rtn = address[1];
-                }
+                HttpCookie cookie = new HttpCookie("himsAuth");
+                cookie.Value = Security.RsaEncription("auth sucess");
+                cookie.Expires = DateTime.Now.AddYears(5);
+                Response.Cookies.Add(cookie);
+                result = "S";
             }
-            return rtn;
+            return Json(result);
         }
     }
 }

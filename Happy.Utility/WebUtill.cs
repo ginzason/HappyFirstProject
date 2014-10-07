@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -142,6 +143,21 @@ namespace Happy.Utility
 
             PagerHTML.Append("</div>");
             return PagerHTML.ToString();
+        }
+
+        /// <summary>
+        /// appsettings 문자열 가져오기
+        /// </summary>
+        /// <param name="key">키</param>
+        /// <returns>value</returns>
+        public static string GetAppSetting(string key)
+        {
+            string returnTx = string.Empty;
+            if(ConfigurationManager.AppSettings[key] != null)
+            {
+                returnTx = ConfigurationManager.AppSettings[key].ToString();
+            }
+            return returnTx;
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Web.Security;
 using Happy.Mis.Models;
-
+using Happy.Utility;
 namespace Happy.Mis.Controllers
 {
     public class BaseController : Controller
@@ -19,15 +19,23 @@ namespace Happy.Mis.Controllers
         /// <param name="context"></param>
         protected override void OnAuthorization(AuthorizationContext context)
         {
-            FormsIdentity id = (FormsIdentity)context.HttpContext.User.Identity;
-            if (context.HttpContext.User.Identity.IsAuthenticated)
+            if (CheckAuthDevice())
             {
-                userInfo();
-                CreateMenu();
+                FormsIdentity id = (FormsIdentity)context.HttpContext.User.Identity;
+                if (context.HttpContext.User.Identity.IsAuthenticated)
+                {
+                    userInfo();
+                    CreateMenu();
+                }
+                else
+                {
+                    context.Result = new RedirectResult("/User/Login");
+                }
             }
             else
             {
-                context.Result = new RedirectResult("/User/Login");
+                FormsAuthentication.SignOut();
+                context.Result = new RedirectResult("/User/Deny");
             }
         }
         /// <summary>
@@ -65,6 +73,19 @@ namespace Happy.Mis.Controllers
 
            // var list = Session["usermenuList"] as List<UserMenu>;
             ViewBag.userMenuList = menuList;
+        }
+
+        private bool CheckAuthDevice()
+        {
+            bool isDevice = false;
+            if (Request.Cookies["himsAuth"] != null)
+            {
+                if (Security.RsaDescription(Request.Cookies["himsAuth"].Value).Contains("auth sucess"))
+                {
+                    isDevice = true;
+                }
+            }
+            return isDevice;
         }
     }
 

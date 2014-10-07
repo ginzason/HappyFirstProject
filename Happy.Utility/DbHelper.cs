@@ -30,7 +30,7 @@ namespace Happy.Utility
             {
                 if (IsLog)
                 {
-                    new CreateDbLog().WriteDbLog(query, param);
+                    new CreateLog().WriteDbLog(query, param);
                 }
                 sqlCon.ConnectionString = connectionString;
                 sqlCom.CommandText = query;
@@ -69,7 +69,7 @@ namespace Happy.Utility
             {
                 if (IsLog)
                 {
-                    new CreateDbLog().WriteDbLog(query, param);
+                    new CreateLog().WriteDbLog(query, param);
                 }
                 sqlCon.ConnectionString = connectionString;
                 sqlCom.CommandText = query;
@@ -108,7 +108,7 @@ namespace Happy.Utility
             {
                 if (IsLog)
                 {
-                    new CreateDbLog().WriteDbLog(query, param);
+                    new CreateLog().WriteDbLog(query, param);
                 }
                 sqlCon.ConnectionString = connectionString;
                 sqlCom.CommandText = query;

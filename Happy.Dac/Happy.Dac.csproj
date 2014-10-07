@@ -45,7 +45,6 @@
     <Compile Include="Com\Dac_Com_CodeInfo.cs" />
     <Compile Include="Mis\Dac_Mis_AuthInfo.cs" />
     <Compile Include="Mis\Dac_Mis_LoginHis.cs" />
-    <Compile Include="Mis\Dac_Mis_MacInfo.cs" />
     <Compile Include="Mis\Dac_Mis_MenuInfo.cs" />
     <Compile Include="Mis\Dac_Mis_UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

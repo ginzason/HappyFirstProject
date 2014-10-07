@@ -39,7 +39,7 @@ namespace Happy.Mis.Controllers
         {
             int row = new Dac_Mis_MenuInfo().Delete_Menu_Info(menu_idx);
             return Json(row);
-        } 
+        }
         #endregion
         #region 권한
         public ActionResult Auth()
@@ -80,7 +80,7 @@ namespace Happy.Mis.Controllers
             }
 
             return Json(row);
-        } 
+        }
         #endregion
         #region 사용자권한부여
         public ActionResult UserAuth()
@@ -100,7 +100,7 @@ namespace Happy.Mis.Controllers
                 row += dac.Insert_AuthUser(au_idx, data, UserId);
             }
             return Json(row);
-        } 
+        }
         #endregion
         #region 공통코드
         public ViewResult ComCodeInfo(int cat_idx = 0)
@@ -145,9 +145,5 @@ namespace Happy.Mis.Controllers
             return Json(row);
         }
         #endregion
-        public ViewResult MacInfo()
-        {
-            return View();
-        }
     }
 }
