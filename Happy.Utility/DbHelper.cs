@@ -13,7 +13,6 @@ namespace Happy.Utility
         private SqlCommand sqlCom = new SqlCommand();
         private SqlDataAdapter sqlAdapeter = new SqlDataAdapter();
         private string connectionString = ConfigurationManager.ConnectionStrings["DBSTRING"].ConnectionString;
-        private bool IsLog = ConfigurationManager.AppSettings["DBLOG"] == "Y" ? true : false;
         #endregion
 
         /// <summary>
@@ -28,10 +27,6 @@ namespace Happy.Utility
             int result = 0;
             try
             {
-                if (IsLog)
-                {
-                    new CreateLog().WriteDbLog(query, param);
-                }
                 sqlCon.ConnectionString = connectionString;
                 sqlCom.CommandText = query;
                 sqlCom.CommandType = type;
@@ -67,10 +62,6 @@ namespace Happy.Utility
             string result = string.Empty;
             try
             {
-                if (IsLog)
-                {
-                    new CreateLog().WriteDbLog(query, param);
-                }
                 sqlCon.ConnectionString = connectionString;
                 sqlCom.CommandText = query;
                 sqlCom.CommandType = type;
@@ -106,10 +97,6 @@ namespace Happy.Utility
             DataSet ds = new DataSet();
             try
             {
-                if (IsLog)
-                {
-                    new CreateLog().WriteDbLog(query, param);
-                }
                 sqlCon.ConnectionString = connectionString;
                 sqlCom.CommandText = query;
                 sqlCom.CommandType = type;

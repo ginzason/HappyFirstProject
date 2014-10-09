@@ -1,0 +1,47 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Zip</title>
+</head>
+<body>
+    <div>
+        <input type="text" id="name" />
+        <button type="button" id="btn" value="click">click</button>
+        <div id="result"></div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/Common")
+    <script type="text/javascript">
+        $(function () {
+            $("#btn").click(function () {
+                var data = Utill.Ajax("@Url.Action("ZipCode")", { name: $("#name").val() });
+                var json = $.parseJSON(data);
+                var html = "<table>";
+                html += "<tr>";
+                html += "<th>주소</th>";
+                html += "<th>우편번호</th>";
+                html += "</tr>";
+                $.each(json.post.itemlist.item, function (key, value) {
+                    html += "<tr>";
+                    html += "<td>" + value.address.section + "</td>";
+                    html += "<td>" + value.postcd.section + "</td>";
+                    html += "</tr>";
+
+                    console.log(value.address.section);
+                    console.log(value.postcd.section);
+                });
+                html += "</table>";
+                $("#result").html(html);
+                console.log(json.post.itemlist.item);
+            });
+        });
+    </script>
+</body>
+</html>

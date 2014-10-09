@@ -17,18 +17,11 @@ namespace Happy.Mis.Controllers
 
         public ActionResult Index()
         {
-           
             return View();
         }
-        public DownloadResult FileDownload()
+        public ActionResult Error()
         {
-            string path = WebUtill.GetAppSetting("FtpDir");
-            string filename = "2014100713103764.xlsx";
-            return new DownloadResult
-            {
-                FileName = "파일.xlsx",
-                Path = path + filename
-            };
+            return View();
         }
 
     }

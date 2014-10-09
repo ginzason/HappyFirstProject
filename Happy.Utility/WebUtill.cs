@@ -177,14 +177,14 @@ namespace Happy.Utility
                 if (file != null && file.ContentLength > 0)
                 {
                     file.SaveAs(path + rename);
-                    new CreateLog().FileUplodLog(rename, file.FileName, path, "success");
                     isSucess = true;
                 }
             }
             catch(Exception ex)
             {
-                new CreateLog().FileUplodLog(rename, file.FileName, path, "fail");
+                new CreateLog().WriteErrorLog(ex);
             }
+            new CreateLog().FileUplodLog(rename, file.FileName, path, isSucess.ToString());
             return isSucess;
         }
     }

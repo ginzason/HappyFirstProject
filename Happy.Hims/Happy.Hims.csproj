@@ -257,6 +257,8 @@
     <Content Include="Views\User\Deny.cshtml" />
     <Content Include="Views\User\SetAuth.cshtml" />
     <Content Include="Views\Test\FtpUpload.cshtml" />
+    <Content Include="Views\Home\Error.cshtml" />
+    <Content Include="Views\Test\Zip.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
