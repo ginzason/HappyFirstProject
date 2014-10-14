@@ -1,7 +1,8 @@
 ﻿@{
-    List<Happy.Mis.Models.UserMenu> menuList = new List<Happy.Mis.Models.UserMenu>();
+    List<Happy.Models.UserMenu> menuList = new List<Happy.Models.UserMenu>();
     menuList = ViewBag.userMenuList;
 }
+
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -32,6 +33,7 @@
                 }
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <li><a href="#" onclick="Master.GotoPad();">Pad</a></li>
                 <li><a href="@Url.Action("Logout","User")">LogOut</a></li>
             </ul>
         </div>

@@ -36,5 +36,15 @@
     <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
     <script src="@Url.Content("~/Scripts/pnotify.custom.min.js")"></script>
     @RenderSection("scripts", required: false)
+    <script type="text/javascript">
+        var Master = {
+            GotoPad: function () {
+                var url = '@WebUtill.GetAppSetting("PadSite")';
+                var data = Utill.Ajax('@Url.Action("Pad","Home")');
+                url += "?param=" + TomochanSecurity.Encription(data);
+                location.href = url;
+            }
+        }
+    </script>
 </body>
 </html>

@@ -43,10 +43,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Com\Dac_Com_CodeInfo.cs" />
-    <Compile Include="Mis\Dac_Mis_AuthInfo.cs" />
-    <Compile Include="Mis\Dac_Mis_LoginHis.cs" />
-    <Compile Include="Mis\Dac_Mis_MenuInfo.cs" />
-    <Compile Include="Mis\Dac_Mis_UserInfo.cs" />
+    <Compile Include="Hims\Dac_Hims_AuthInfo.cs" />
+    <Compile Include="Hims\Dac_Hims_LoginHis.cs" />
+    <Compile Include="Hims\Dac_Hims_MenuInfo.cs" />
+    <Compile Include="Hims\Dac_Hims_UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test.cs" />
   </ItemGroup>

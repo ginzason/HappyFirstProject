@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Xml;
 
-namespace Happy.Mis.Controllers
+namespace Happy.Hims.Controllers
 {
     public class TestController : BaseController
     {
@@ -71,7 +71,6 @@ namespace Happy.Mis.Controllers
             ViewBag.ssss = jsonText;
             return View();
         }
-
         public JsonResult ZipCode(string name = "")
         {
             string query = "http://biz.epost.go.kr/KpostPortal/openapi?regkey=";
@@ -86,6 +85,16 @@ namespace Happy.Mis.Controllers
             doc.Load(reader);
             string jsonText = JsonConvert.SerializeXmlNode(doc).Replace("#cdata-section", "section");
             return Json(jsonText);
+        }
+        public ActionResult Pad(string param = "")
+        {
+            if (param != "")
+            {
+                string[] arrParam = Security.TomochanSecurityDescription(param).Split('/');
+                ViewBag.Id = arrParam[0];
+                ViewBag.Name = arrParam[1];
+            }
+            return View();
         }
     }
 }

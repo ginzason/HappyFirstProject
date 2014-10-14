@@ -1,37 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Web.Security;
 using Happy.Dac.Mis;
-using Happy.Mis.Models;
+using Happy.Models;
 using Happy.Utility;
-using System.Management;
 
-namespace Happy.Mis.Controllers
+namespace Happy.Hims.Controllers
 {
     public class UserController : Controller
     {
-        //
-        // GET: /User/
-
-        public ActionResult Login()
+        public ActionResult Login(string param = "")
         {
-            ViewBag.ss = Security.RsaEncription("1111");
+            //Hims에서 넘어왔을때
+            if (param != "")
+            {
+                UserInfo user = new UserInfo();
+                string desText = Security.TomochanSecurityDescription(param);
+                string[] arrDesText = desText.Split('/');
+                if (arrDesText.Length == 2)
+                {
+                    user.userid = arrDesText[0];
+                    user.username = arrDesText[1];
+                    CreateCookie(1, user);
+                    CreateMenu(user.userid);
+                    Response.Redirect("~/Home/Index");
+                }
+            }
             return View();
         }
         [HttpPost]
         public JsonResult LoginProc(string id= "", string pwd = "")
         {
             int count = 0;
-            DataSet ds = new Dac_Mis_UserInfo().Select_UserInfo(id);
+            DataSet ds = new Dac_Hims_UserInfo().Select_UserInfo(id);
             if(ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 UserInfo userinfo = DataUtill.ConvertToRow<UserInfo>(ds.Tables[0].Rows[0]);
-                if(Security.TomochanSecurityDescription(pwd) == Security.RsaDescription(userinfo.userpwd))
+                if(Security.TomochanSecurityDescription(pwd) == Security.RsaDescription(userinfo.userpwd)
+                    && userinfo.user_status == "AL")
                 {
                     InsertLoginHistory(id, "S");
                     count = CreateCookie(count, userinfo);
@@ -69,7 +79,7 @@ namespace Happy.Mis.Controllers
         }
         private void CreateMenu(string userid)
         {
-            DataSet ds = new Dac_Mis_UserInfo().Select_UserMenu(userid);
+            DataSet ds = new Dac_Hims_UserInfo().Select_UserMenu(userid);
             List<UserMenu> usermenuList = DataUtill.ConvertToList<UserMenu>(ds.Tables[0]);
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             string data = serializer.Serialize(usermenuList);
@@ -83,7 +93,7 @@ namespace Happy.Mis.Controllers
         private void InsertLoginHistory(string id, string result)
         {
             string ip = Request.UserHostAddress == "::1" ? "127.0.0.1" : Request.UserHostAddress;
-            new Dac_Mis_LoginHis().Insert_Login_His(id, result, "", ip);
+            new Dac_Hims_LoginHis().Insert_Login_His(id, result, "", ip);
         }
 
         public ActionResult Deny()

@@ -137,10 +137,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Com\ComCodeCategory.cs" />
-    <Compile Include="Models\Com\ComCodeInfo.cs" />
-    <Compile Include="Models\User\UserInfo.cs" />
-    <Compile Include="Models\User\UserMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -259,9 +255,11 @@
     <Content Include="Views\Test\FtpUpload.cshtml" />
     <Content Include="Views\Home\Error.cshtml" />
     <Content Include="Views\Test\Zip.cshtml" />
+    <Content Include="Views\Test\Pad.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -270,6 +268,10 @@
     <ProjectReference Include="..\Happy.Dac\Happy.Dac.csproj">
       <Project>{f7c719b5-5864-4c02-a61f-8ac56870cbec}</Project>
       <Name>Happy.Dac</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Happy.Models\Happy.Models.csproj">
+      <Project>{6fe0009a-2a46-4274-a4c6-82d6cb94cf0a}</Project>
+      <Name>Happy.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\Happy.Utility\Happy.Utility.csproj">
       <Project>{eb9dca22-2d42-4446-866e-3b991d5859a5}</Project>

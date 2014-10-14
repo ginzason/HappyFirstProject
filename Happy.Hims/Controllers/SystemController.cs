@@ -4,20 +4,21 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Happy.Dac.Mis;
-using Happy.Mis.Models;
+using Happy.Models;
 using Happy.Utility;
 using System.Data;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
 using Happy.Dac.Com;
-namespace Happy.Mis.Controllers
+using Happy.Dac.Hims;
+namespace Happy.Hims.Controllers
 {
     public class SystemController : BaseController
     {
         #region Menu
         public ActionResult Menu()
         {
-            List<UserMenu> usermenuList = DataUtill.ConvertToList<UserMenu>(new Dac_Mis_MenuInfo().Select_Menu_Info().Tables[0]);
+            List<UserMenu> usermenuList = DataUtill.ConvertToList<UserMenu>(new Dac_Hims_MenuInfo().Select_Menu_Info().Tables[0]);
             return View(usermenuList);
         }
         [HttpPost]
@@ -26,31 +27,31 @@ namespace Happy.Mis.Controllers
             int row = 0;
             if (menu_idx == 0)
             {
-                row = new Dac_Mis_MenuInfo().Insert_Menu_info(parent_idx, menu_name, menu_url, page_name, sort_order, UserId);
+                row = new Dac_Hims_MenuInfo().Insert_Menu_info(parent_idx, menu_name, menu_url, page_name, sort_order, UserId);
             }
             else
             {
-                row = new Dac_Mis_MenuInfo().Update_Menu_info(menu_idx, parent_idx, menu_name, menu_url, page_name, sort_order, UserId);
+                row = new Dac_Hims_MenuInfo().Update_Menu_info(menu_idx, parent_idx, menu_name, menu_url, page_name, sort_order, UserId);
             }
             return Json(row);
         }
         [HttpPost]
         public JsonResult MenuDelete(int menu_idx = 0)
         {
-            int row = new Dac_Mis_MenuInfo().Delete_Menu_Info(menu_idx);
+            int row = new Dac_Hims_MenuInfo().Delete_Menu_Info(menu_idx);
             return Json(row);
         }
         #endregion
         #region 권한
         public ActionResult Auth()
         {
-            List<AuthMenu> usermenuList = DataUtill.ConvertToList<AuthMenu>(new Dac_Mis_AuthInfo().Select_AuthMenuAll(0).Tables[0]);
+            List<AuthMenu> usermenuList = DataUtill.ConvertToList<AuthMenu>(new Dac_Hims_AuthInfo().Select_AuthMenuAll(0).Tables[0]);
             return View(usermenuList);
         }
         [HttpPost]
         public JsonResult AuthMasterList()
         {
-            DataTable dt = new Dac_Mis_AuthInfo().Select_AuthMaster().Tables[0];
+            DataTable dt = new Dac_Hims_AuthInfo().Select_AuthMaster().Tables[0];
             var json = JsonConvert.SerializeObject(dt);
 
             return Json(json, JsonRequestBehavior.AllowGet);
@@ -58,19 +59,19 @@ namespace Happy.Mis.Controllers
         [HttpPost]
         public JsonResult AuthMasterSave(string name = "")
         {
-            int row = new Dac_Mis_AuthInfo().Insert_AuthMaster(name, UserId);
+            int row = new Dac_Hims_AuthInfo().Insert_AuthMaster(name, UserId);
             return Json(row);
         }
         [HttpPost]
         public JsonResult AuthMasterDelete(int au_idx = 0)
         {
-            int row = new Dac_Mis_AuthInfo().Delete_AuthMaster(au_idx);
+            int row = new Dac_Hims_AuthInfo().Delete_AuthMaster(au_idx);
             return Json(row);
         }
         [HttpPost]
         public JsonResult AuthMenuInsert(int au_idx = 0, string menu_idx = "")
         {
-            Dac_Mis_AuthInfo dac = new Dac_Mis_AuthInfo();
+            Dac_Hims_AuthInfo dac = new Dac_Hims_AuthInfo();
             int row = 0;
             row = dac.Delete_AuthMenu(au_idx);
             string[] arrMenuIdx = menu_idx.Trim().Split(',');
@@ -85,13 +86,13 @@ namespace Happy.Mis.Controllers
         #region 사용자권한부여
         public ActionResult UserAuth()
         {
-            List<UserInfo> list = DataUtill.ConvertToList<UserInfo>(new Dac_Mis_UserInfo().Select_UserInfoList("", 1, 9999).Tables[0]);
+            List<UserInfo> list = DataUtill.ConvertToList<UserInfo>(new Dac_Hims_UserInfo().Select_UserInfoList("", 1, 9999).Tables[0]);
             return View(list);
         }
         [HttpPost]
         public JsonResult UserAuthInsert(int au_idx = 0, string userid = "")
         {
-            Dac_Mis_AuthInfo dac = new Dac_Mis_AuthInfo();
+            Dac_Hims_AuthInfo dac = new Dac_Hims_AuthInfo();
             int row = 0;
             row = dac.Delete_AuthUser(au_idx);
             string[] arrMenuIdx = userid.Trim().Split(',');

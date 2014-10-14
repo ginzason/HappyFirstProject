@@ -5,9 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Web.Security;
-using Happy.Mis.Models;
+using Happy.Models;
 using Happy.Utility;
-namespace Happy.Mis.Controllers
+namespace Happy.Hims.Controllers
 {
     public class BaseController : Controller
     {
