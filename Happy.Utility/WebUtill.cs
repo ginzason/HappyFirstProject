@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -187,5 +188,107 @@ namespace Happy.Utility
             new CreateLog().FileUplodLog(rename, file.FileName, path, isSucess.ToString());
             return isSucess;
         }
+        #region Email
+        /// <summary>
+        /// email 보내기 : 한사람
+        /// </summary>
+        /// <param name="to">받는사람 email addr</param>
+        /// <param name="title">제목</param>
+        /// <param name="body">내용</param>
+        /// <param name="isHtml">html인지 아닌지</param>
+        /// <returns>결과</returns>
+        public static bool SendMail(string to, string title, string body, bool isHtml)
+        {
+            bool isTrue = false;
+            MailMessage mail = new MailMessage();
+            mail.From = new MailAddress(WebUtill.GetAppSetting("FromMail"));
+            mail.To.Add(new MailAddress(to));
+            mail.Subject = title;
+            mail.IsBodyHtml = true;
+            mail.Body = body;
+            mail.SubjectEncoding = Encoding.UTF8;
+            mail.BodyEncoding = Encoding.UTF8;
+            SmtpClient client = new SmtpClient(WebUtill.GetAppSetting("SmtpUrl"));
+            try
+            {
+                client.Send(mail);
+                isTrue = true;
+            }
+            catch (Exception ex)
+            {
+                new CreateLog().WriteErrorLog(ex);
+            }
+            return isTrue;
+        }
+        /// <summary>
+        /// email 보내기 : 여러명에게 가각다른 제목 내용
+        /// </summary>
+        /// <param name="to">받는사람 email addr</param>
+        /// <param name="title">제목</param>
+        /// <param name="body">내용</param>
+        /// <param name="isHtml">html인지 아닌지</param>
+        /// <returns>결과</returns>
+        public static List<bool> SendMail(List<string> to, List<string> title, List<string> body, bool isHtml)
+        {
+            List<bool> isTrue = new List<bool>();
+            for (int i = 0; i < to.Count; i++)
+            {
+                MailMessage mail = new MailMessage();
+                mail.From = new MailAddress(WebUtill.GetAppSetting("FromMail"));
+                mail.To.Add(new MailAddress(to[i]));
+                mail.Subject = title[i];
+                mail.IsBodyHtml = true;
+                mail.Body = body[i];
+                mail.SubjectEncoding = Encoding.UTF8;
+                mail.BodyEncoding = Encoding.UTF8;
+                SmtpClient client = new SmtpClient(WebUtill.GetAppSetting("SmtpUrl"));
+                try
+                {
+                    client.Send(mail);
+                    isTrue.Add(true);
+                }
+                catch (Exception ex)
+                {
+                    isTrue.Add(false);
+                    new CreateLog().WriteErrorLog(ex);
+                }
+            }
+            return isTrue;
+        }
+        /// <summary>
+        /// email 보내기 : 여러명에게 같은 메일 보내기
+        /// </summary>
+        /// <param name="to">받는사람 email addr</param>
+        /// <param name="title">제목</param>
+        /// <param name="body">내용</param>
+        /// <param name="isHtml">html인지 아닌지</param>
+        /// <returns>결과</returns>
+        public static bool SendMail(List<string> to, string title, string body, bool isHtml)
+        {
+            bool isTrue = false;
+            MailMessage mail = new MailMessage();
+            mail.From = new MailAddress(WebUtill.GetAppSetting("FromMail"));
+            for (int i = 0; i < to.Count; i++)
+            {
+                mail.To.Add(new MailAddress(to[i]));
+            }
+            mail.Subject = title;
+            mail.IsBodyHtml = true;
+            mail.Body = body;
+            mail.SubjectEncoding = Encoding.UTF8;
+            mail.BodyEncoding = Encoding.UTF8;
+            SmtpClient client = new SmtpClient(WebUtill.GetAppSetting("SmtpUrl"));
+            try
+            {
+                client.Send(mail);
+                isTrue = true;
+            }
+            catch (Exception ex)
+            {
+                new CreateLog().WriteErrorLog(ex);
+            }
+            return isTrue;
+        } 
+        #endregion
     }
 }

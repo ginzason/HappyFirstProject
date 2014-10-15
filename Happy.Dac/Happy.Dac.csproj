@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Com\Dac_Com_CodeInfo.cs" />
+    <Compile Include="Com\Dac_Com_Email.cs" />
     <Compile Include="Hims\Dac_Hims_AuthInfo.cs" />
     <Compile Include="Hims\Dac_Hims_LoginHis.cs" />
     <Compile Include="Hims\Dac_Hims_MenuInfo.cs" />

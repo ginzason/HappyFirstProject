@@ -1,11 +1,7 @@
-﻿using Happy.Utility;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Happy.Utility;
 
 namespace Happy.Dac.Com
 {
@@ -63,12 +59,13 @@ namespace Happy.Dac.Com
         /// <param name="code_desc">코드상세</param>
         /// <param name="create_user"></param>
         /// <returns></returns>
-        public int Insert_Code_Master(int cat_idx, string code_name, string code_desc, string create_user)
+        public int Insert_Code_Master(int cat_idx, string code_name, string code_desc, string code_value, string create_user)
         {
             string qry = "SP_COM_INSERT_COM_CODE_MASTER";
             List<SqlParameter> ParamList = new List<SqlParameter>();
             ParamList.Add(new SqlParameter("@CAT_IDX", cat_idx));
             ParamList.Add(new SqlParameter("@CODE_NAME", code_name));
+            ParamList.Add(new SqlParameter("@CODE_VALUE", code_value));
             ParamList.Add(new SqlParameter("@CODE_DESC", code_desc));
             ParamList.Add(new SqlParameter("@CREATE_USER", create_user));
             return SqlExcuteNonQuery(qry, ParamList, CommandType.StoredProcedure);
@@ -82,13 +79,14 @@ namespace Happy.Dac.Com
         /// <param name="code_desc">상세</param>
         /// <param name="update_user"></param>
         /// <returns></returns>
-        public int Update_Code_Master(int code_idx, int cat_idx, string code_name, string code_desc, string update_user)
+        public int Update_Code_Master(int code_idx, int cat_idx, string code_name, string code_desc, string code_value, string update_user)
         {
             string qry = "SP_COM_UPDATE_COM_CODE_MASTER";
             List<SqlParameter> ParamList = new List<SqlParameter>();
             ParamList.Add(new SqlParameter("@CODE_IDX", code_idx));
             ParamList.Add(new SqlParameter("@CAT_IDX", cat_idx));
             ParamList.Add(new SqlParameter("@CODE_NAME", code_name));
+            ParamList.Add(new SqlParameter("@CODE_VALUE", code_value));
             ParamList.Add(new SqlParameter("@CODE_DESC", code_desc));
             ParamList.Add(new SqlParameter("@UPDATE_USER", update_user));
             return SqlExcuteNonQuery(qry, ParamList, CommandType.StoredProcedure);

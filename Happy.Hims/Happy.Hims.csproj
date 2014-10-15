@@ -244,7 +244,6 @@
     <Content Include="Views\Shared\_SystemMenu.cshtml" />
     <Content Include="Views\System\Auth.cshtml" />
     <Content Include="Views\System\ComCodeInfo.cshtml" />
-    <Content Include="Views\System\MacInfo.cshtml" />
     <Content Include="Views\System\Menu.cshtml" />
     <Content Include="Views\System\UserAuth.cshtml" />
     <Content Include="Views\Test\FaceBook.cshtml" />
@@ -256,6 +255,7 @@
     <Content Include="Views\Home\Error.cshtml" />
     <Content Include="Views\Test\Zip.cshtml" />
     <Content Include="Views\Test\Pad.cshtml" />
+    <Content Include="Views\Test\Mail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

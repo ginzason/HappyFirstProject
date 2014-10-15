@@ -128,15 +128,15 @@ namespace Happy.Hims.Controllers
             return Json(row);
         }
         [HttpPost]
-        public JsonResult ComCodeSave(int cat_idx = 0, string code_name = "", string code_desc = "")
+        public JsonResult ComCodeSave(int cat_idx = 0, string code_name = "", string code_desc = "", string code_value = "")
         {
-            int row = new Dac_Com_CodeInfo().Insert_Code_Master(cat_idx, code_name, code_desc, UserId);
+            int row = new Dac_Com_CodeInfo().Insert_Code_Master(cat_idx, code_name, code_desc, code_value, UserId);
             return Json(row);
         }
         [HttpPost]
-        public JsonResult ComCodeEdit(int code_idx, int cat_idx = 0, string code_name = "", string code_desc = "")
+        public JsonResult ComCodeEdit(int code_idx, int cat_idx = 0, string code_name = "", string code_desc = "", string code_value = "")
         {
-            int row = new Dac_Com_CodeInfo().Update_Code_Master(code_idx, cat_idx, code_name, code_desc, UserId);
+            int row = new Dac_Com_CodeInfo().Update_Code_Master(code_idx, cat_idx, code_name, code_desc, code_value, UserId);
             return Json(row);
         }
         [HttpPost]

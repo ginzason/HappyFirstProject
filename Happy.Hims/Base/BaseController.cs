@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Web.Security;
+using Happy.Dac.Com;
 using Happy.Models;
 using Happy.Utility;
 namespace Happy.Hims.Controllers
@@ -38,6 +39,8 @@ namespace Happy.Hims.Controllers
                 context.Result = new RedirectResult("/User/Deny");
             }
         }
+
+         #region 사용자 유효성 체크
         /// <summary>
         /// 로그인계정정보
         /// </summary>
@@ -65,13 +68,13 @@ namespace Happy.Hims.Controllers
             if (Request.Cookies["MisMenu"] != null)
             {
                 if (Request.Cookies["MisMenu"]["Menu"] != null)
-                { 
+                {
                     JavaScriptSerializer serializer = new JavaScriptSerializer();
                     menuList = serializer.Deserialize<List<UserMenu>>(Server.UrlDecode(Request.Cookies["MisMenu"]["Menu"].ToString()));
                 }
             }
 
-           // var list = Session["usermenuList"] as List<UserMenu>;
+            // var list = Session["usermenuList"] as List<UserMenu>;
             ViewBag.userMenuList = menuList;
         }
 
@@ -86,7 +89,61 @@ namespace Happy.Hims.Controllers
                 }
             }
             return isDevice;
+        } 
+         #endregion
+
+        #region Email 보내기
+        /// <summary>
+        /// email 보내기  : 한사람
+        /// </summary>
+        /// <param name="to">받는사람 email addr</param>
+        /// <param name="title">제목</param>
+        /// <param name="body">내용</param>
+        /// <param name="isHtml">html인지 아닌지</param>
+        /// <returns>결과</returns>
+        public bool SendEmail(string to, string title, string body, bool isHtml)
+        {
+            bool result = WebUtill.SendMail(to, title, body, isHtml);
+            new Dac_Com_Email().Insert_Email(to, title, body, DateTime.Now, result, UserName);
+            return result;
         }
+        /// <summary>
+        /// email 보내기 : 여러명에게 가각다른 제목 내용
+        /// </summary>
+        /// <param name="to">받는사람 email addr</param>
+        /// <param name="title">제목</param>
+        /// <param name="body">내용</param>
+        /// <param name="isHtml">html인지 아닌지</param>
+        /// <returns>결과</returns>
+        public List<bool> SendEmail(List<string> to, List<string> title, List<string> body, bool isHtml)
+        {
+            List<bool> result = WebUtill.SendMail(to, title, body, isHtml);
+            for (int i = 0; i < to.Count; i++)
+            {
+                new Dac_Com_Email().Insert_Email(to[i], title[i], body[i], DateTime.Now, result[i], UserName);
+            }
+            return result;
+        }
+        /// <summary>
+        /// email 보내기 : 여러명에게 같은 메일 보내기
+        /// </summary>
+        /// <param name="to">받는사람 email addr</param>
+        /// <param name="title">제목</param>
+        /// <param name="body">내용</param>
+        /// <param name="isHtml">html인지 아닌지</param>
+        /// <returns>결과</returns>
+        public bool SendEmail(List<string> to, string title, string body, bool isHtml)
+        {
+            bool result = WebUtill.SendMail(to, title, body, isHtml);
+            string listTo = string.Empty;
+            foreach (var data in to)
+            {
+                listTo += listTo != "" ? " ," + data : data;
+            }
+            new Dac_Com_Email().Insert_Email(listTo, title, body, DateTime.Now, result, UserName);
+            return result;
+        } 
+        #endregion
     }
 
     public class DownloadResult : ActionResult

@@ -6,6 +6,7 @@ namespace Happy.Models
         public int cat_idx { get; set; }
         public int code_idx { get; set; }
         public string code_name { get; set; }
+        public string code_value { get; set; }
         public string code_desc { get; set; }
     }
 }

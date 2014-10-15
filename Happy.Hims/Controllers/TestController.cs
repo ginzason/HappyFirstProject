@@ -4,6 +4,11 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml;
+using System.Net.Mail;
+using System.Text;
+using System;
+using System.IO;
+using System.Collections.Generic;
 
 namespace Happy.Hims.Controllers
 {
@@ -94,6 +99,41 @@ namespace Happy.Hims.Controllers
                 ViewBag.Id = arrParam[0];
                 ViewBag.Name = arrParam[1];
             }
+            return View();
+        }
+        public ActionResult Mail()
+        {
+            //bool result = SendEmail(
+            //    "aka.tomochan@gmail.com", 
+            //    "제목",
+            //    "<!DOCTYPE html>" +
+            //                "<html xmlns=\"http://www.w3.org/1999/xhtml\">" +
+            //                "<head>" +
+            //                "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>" +
+            //                "    <title></title>" +
+            //                "</head>" +
+            //                "<body>" +
+            //                "    <h1>Test입니다.</h1>" +
+            //                "    <p>dsfgsdfsdfsdfsdfsdfsdfsdfsdfsdf</p>" +
+            //                "<img src=\"http://dbscthumb.phinf.naver.net/2881_000_1/20141009090046126_6M2N8OHP2.jpg/20141009_0710_DC.jpg?type=w646_fst;;93;true\""+
+            //                "    <ul>"+
+            //                "        <li>fsdfsdfsdfsd</li><li>fsdfsdfsdfsd</li><li>fsdfsdfsdfsd</li><li>fsdfsdfsdfsd</li><li>fsdfsdfsdfsd</li>"+
+            //                "    </ul>"+
+            //                "</body>"+
+            //                "</html>",
+            //                true);
+            //ViewBag.Result = result;
+
+            List<string> toList = new List<string>();
+            toList.Add("aka.tomochan@gmail.com");
+            toList.Add("dj_tomochan@naver.com");
+            List<string> title = new List<string>();
+            title.Add("title1");
+            title.Add("title2");
+            List<string> body = new List<string>();
+            body.Add("1");
+            body.Add("2");
+            SendEmail(toList, title, body, false);
             return View();
         }
     }
