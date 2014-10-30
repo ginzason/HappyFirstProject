@@ -9,6 +9,9 @@ using System.Text;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Data.OleDb;
+using System.Data;
+using Happy.Dac.Mis;
 
 namespace Happy.Hims.Controllers
 {
@@ -26,24 +29,13 @@ namespace Happy.Hims.Controllers
         {
             return View();
         }
-
-        public ActionResult FtpUpload()
-        {
-            return View();
-        }
-        [HttpPost]
-        public ActionResult FileUpload(HttpPostedFileBase file1)
-        {
-            bool isresult = WebUtill.LicenseFileUpload(file1);
-            return RedirectToAction("FtpUpload");
-        }
         public DownloadResult FileDownload()
         {
-            string path = WebUtill.GetAppSetting("FtpDir");
-            string filename = "2014100713103763.xlsx";
+            string path = WebUtill.GetAppSetting("EditorImgDir");
+            string filename = "1.jpg";
             return new DownloadResult
             {
-                FileName = "파일.xlsx",
+                FileName = "1.jpg",
                 Path = path + filename
             };
         }
@@ -133,8 +125,55 @@ namespace Happy.Hims.Controllers
             List<string> body = new List<string>();
             body.Add("1");
             body.Add("2");
-            SendEmail(toList, title, body, false);
+            List<bool> resultList = SendEmail(toList, title, body, false);
+            var result = "";
+            foreach(var data in resultList)
+            {
+                result += ", " + data.ToString();
+            }
+            ViewBag.Result = result;
             return View();
         }
+        public ActionResult Paging()
+        {
+            return View();
+        }
+        public ActionResult Video()
+        {
+            return View();
+        }
+        public ActionResult Editor()
+        {
+            return View();
+        }
+
+        public ActionResult DatePicker()
+        {
+            return View();
+        }
+        public ActionResult Excel()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ExcelUpload(HttpPostedFileBase file1)
+        {
+            DataTable dt = WebUtill.ExcelToDataSet(file1);
+            return Redirect("Excel");
+        }
+        public ActionResult ExcelDown()
+        {
+            List<string> list = new List<string>();
+            list.Add("시스템아이디");
+            list.Add("사용자아이디");
+            list.Add("결과");
+            list.Add("맥");
+            list.Add("아이피");
+            list.Add("날짜");
+            WebUtill.DataTableToExcelDown(new Dac_Hims_LoginHis().Select_Login_His("admin").Tables[0], list, "excel");
+            return Redirect("Excel");
+        }
+       
+
     }
 }

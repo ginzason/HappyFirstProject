@@ -18,12 +18,11 @@ namespace Happy.Dac.Mis
             ParamList.Add(new SqlParameter("@IPADDR", ipaddr));
             return SqlExcuteNonQuery(qry, ParamList, System.Data.CommandType.StoredProcedure);
         }
-        public DataSet Select_Login_His(DateTime sdate, DateTime edate)
+        public DataSet Select_Login_His(string id)
         {
             string qry = "SP_MIS_SELECT_LOGIN_HIS";
             List<SqlParameter> ParamList = new List<SqlParameter>();
-            ParamList.Add(new SqlParameter("@SDATE", sdate));
-            ParamList.Add(new SqlParameter("@EDATE", edate));
+            ParamList.Add(new SqlParameter("@USERID", id));
             return SqlGetDataSet(qry, ParamList, CommandType.StoredProcedure);
         }
     }

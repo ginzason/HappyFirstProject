@@ -47,14 +47,18 @@
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.30506.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
@@ -88,10 +92,6 @@
     </Reference>
     <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.30506.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.30506.0\lib\net40\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Optimization">
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.0.0\lib\net40\System.Web.Optimization.dll</HintPath>
@@ -131,6 +131,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Base\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PadController.cs" />
     <Compile Include="Controllers\SystemController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -138,6 +139,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scripts\editor\photo_uploader\popup\Upload.aspx.cs">
+      <DependentUpon>Upload.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Scripts\editor\photo_uploader\popup\Upload.aspx.designer.cs">
+      <DependentUpon>Upload.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -204,12 +212,65 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Scripts\editor\photo_uploader\popup\Upload.aspx" />
+    <Content Include="Scripts\editor\sample.php" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Common\Common.js" />
     <Content Include="Scripts\Common\customPlugin.js" />
     <Content Include="Scripts\Common\Utill.js" />
+    <Content Include="Scripts\editor\css\smart_editor2.css" />
+    <Content Include="Scripts\editor\css\smart_editor2_in.css" />
+    <Content Include="Scripts\editor\css\smart_editor2_items.css" />
+    <Content Include="Scripts\editor\css\smart_editor2_out.css" />
+    <Content Include="Scripts\editor\img\bg_b1.png" />
+    <Content Include="Scripts\editor\img\bg_button.gif" />
+    <Content Include="Scripts\editor\img\bg_button_left.gif" />
+    <Content Include="Scripts\editor\img\bg_button_right.gif" />
+    <Content Include="Scripts\editor\img\bg_find_h3.gif" />
+    <Content Include="Scripts\editor\img\bg_help.gif" />
+    <Content Include="Scripts\editor\img\bg_icon_tool.gif" />
+    <Content Include="Scripts\editor\img\bg_line1.gif" />
+    <Content Include="Scripts\editor\img\bg_quote2.gif" />
+    <Content Include="Scripts\editor\img\bg_set.gif" />
+    <Content Include="Scripts\editor\img\bg_text_tool.gif" />
+    <Content Include="Scripts\editor\img\bg_tool2.gif" />
+    <Content Include="Scripts\editor\img\editor_guideline_698.gif" />
+    <Content Include="Scripts\editor\img\editor_guideline_890.gif" />
+    <Content Include="Scripts\editor\img\icon_set.gif" />
+    <Content Include="Scripts\editor\img\ico_extend.png" />
+    <Content Include="Scripts\editor\img\ko_KR\btn_set.png" />
+    <Content Include="Scripts\editor\img\ko_KR\bx_set_110302.gif" />
+    <Content Include="Scripts\editor\img\ko_KR\text_tool_set.png" />
+    <Content Include="Scripts\editor\img\photoQuickPopup\bg_drag_image.png" />
+    <Content Include="Scripts\editor\img\photoQuickPopup\btn_cancel.png" />
+    <Content Include="Scripts\editor\img\photoQuickPopup\btn_confirm.png" />
+    <Content Include="Scripts\editor\img\photoQuickPopup\btn_confirm2.png" />
+    <Content Include="Scripts\editor\img\photoQuickPopup\btn_del.png" />
+    <Content Include="Scripts\editor\img\photoQuickPopup\btn_find.png" />
+    <Content Include="Scripts\editor\img\text_tool_set2.png" />
+    <Content Include="Scripts\editor\js\HuskyEZCreator.js" />
+    <Content Include="Scripts\editor\js\jindo.min.js" />
+    <Content Include="Scripts\editor\js\jindo_component.js" />
+    <Content Include="Scripts\editor\js\SE2BasicCreator.js" />
+    <Content Include="Scripts\editor\js\SE2B_Configuration_General.js" />
+    <Content Include="Scripts\editor\js\SE2B_Configuration_Service.js" />
+    <Content Include="Scripts\editor\js\smarteditor2.js" />
+    <Content Include="Scripts\editor\js\smarteditor2.min.js" />
+    <Content Include="Scripts\editor\photo_uploader\plugin\hp_SE2M_AttachQuickPhoto.js" />
+    <Content Include="Scripts\editor\photo_uploader\popup\attach_photo.js" />
+    <Content Include="Scripts\editor\photo_uploader\popup\callback.html" />
+    <Content Include="Scripts\editor\photo_uploader\popup\jindo.fileuploader.js" />
+    <Content Include="Scripts\editor\photo_uploader\popup\jindo.min.js" />
+    <Content Include="Scripts\editor\photo_uploader\popup\photo_uploader.html" />
+    <Content Include="Scripts\editor\readme.txt" />
+    <Content Include="Scripts\editor\release_notes.txt" />
+    <Content Include="Scripts\editor\SmartEditor2.html" />
+    <Content Include="Scripts\editor\SmartEditor2Skin.html" />
+    <Content Include="Scripts\editor\smart_editor2_inputarea.html" />
+    <Content Include="Scripts\editor\smart_editor2_inputarea_ie8.html" />
+    <Content Include="Scripts\editor\src_include.txt" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
@@ -227,7 +288,9 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\pnotify.custom.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -251,15 +314,23 @@
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\User\Deny.cshtml" />
     <Content Include="Views\User\SetAuth.cshtml" />
-    <Content Include="Views\Test\FtpUpload.cshtml" />
     <Content Include="Views\Home\Error.cshtml" />
     <Content Include="Views\Test\Zip.cshtml" />
     <Content Include="Views\Test\Pad.cshtml" />
     <Content Include="Views\Test\Mail.cshtml" />
+    <Content Include="Views\System\UserList.cshtml" />
+    <Content Include="Views\Test\Paging.cshtml" />
+    <Content Include="Views\Test\Video.cshtml" />
+    <Content Include="Views\Test\Editor.cshtml" />
+    <Content Include="Views\Test\DatePicker.cshtml" />
+    <Content Include="Views\Test\Excel.cshtml" />
+    <Content Include="Views\System\LoginHistoryView.cshtml" />
+    <Content Include="Views\Shared\_PadLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="tmp\excel\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

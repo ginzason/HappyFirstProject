@@ -49,7 +49,6 @@
     <Compile Include="Hims\Dac_Hims_MenuInfo.cs" />
     <Compile Include="Hims\Dac_Hims_UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Happy.Utility\Happy.Utility.csproj">

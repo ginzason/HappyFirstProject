@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web;
+using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet; 
 
 namespace Happy.Utility
 {
@@ -54,96 +58,48 @@ namespace Happy.Utility
         /// <param name="totalRow">총 레코드 수</param>
         /// <param name="pageSize">한화면에 보여줄 행 수</param>
         /// <returns></returns>
-        public static string GetPaging(int totalRow, int pageSize)
+        public static string Pager(int totalRow, int pageSize)
         {
-            int currentPage = RequestByInt("page") != 0 ? RequestByInt("page") : 1;
-            StringBuilder PagerHTML = new StringBuilder();
-            PagerHTML.Append("<input type=\"hidden\" id=\"page\" name=\"page\" value=\"" + currentPage + "\" />");
-            PagerHTML.Append("<div class=\"paging\">");
-            int page = currentPage;
-            int currentBlodkEndNo;		// 현재 블럭에서의 페이지 단위 값 : 10, 20, 30...
-            int endNum;					// 현재 페이지 번호의 뒷자리 값
-            int endNoOfLoop;			// 페이지 블럭에서 마지막 페이지 번호의 값		
+            var html = "<ul class=\"pagination\">";
+            var currnetPage = RequestByInt("page") == 0 ? 1 : RequestByInt("page");
 
-            string tempStr, tempImgStr;
-
-            // 총 페이지 수 구하기
-            int pageCount = ((totalRow - 1) / pageSize) + 1;
-
-            string strPage = page.ToString();
-            // 현재 페이지 번호의 뒷자리 값 구하기
-            endNum = int.Parse(strPage.Substring(strPage.Length - 1));
-
-            // 현재 자신의 페이지 블럭에서 마지막 페이지 값 구하기.
-            if ((page % 10) == 0)
-                currentBlodkEndNo = page;
-            else
-                currentBlodkEndNo = (page + 10) - endNum;
-
-            // 페이지 블럭에서 마지막 페이지 번호 값 구하기
-            // 가장 마지막 페이지 블럭에 도달했을 경우에는 endNoOfLoop가 잔여 페이지 수치로 나온다.
-            // 그 외의 경우에는 모두 currentBlodkEndNo과 같은 수가 나온다.
-            if (pageCount > currentBlodkEndNo)
-                endNoOfLoop = currentBlodkEndNo;
-            else
-                endNoOfLoop = pageCount;
-
-
-            // 이전 10개 기능 적용
-            if (currentBlodkEndNo > 10)
+            int pagecount = ((totalRow - 1) / pageSize) + 1;
+            int tmpPageNa = currnetPage % pageSize == 0 ? 0 : 1;
+            int tmpPage = currnetPage / pageSize + tmpPageNa;
+            int lastPage = ((tmpPage - 1) * 5) + pageSize > pagecount ? pagecount : ((tmpPage - 1) * 5) + pageSize;
+            //이전가기
+            if (pagecount <= 1 || currnetPage <= 5)
             {
-                PagerHTML.Append("<a href='javascript:;' onclick=\"Common.GoPage(1);\"> [<<] </a>");
+                html += string.Format("<li class=\"disabled\"><a href=\"javascript:;\">&#60;</a></li>");
             }
             else
             {
-                PagerHTML.Append("<a href=\"#\"> [<<] </a>");
+                html += string.Format("<li><a href='javascript:;'  onclick=\"Common.GoPage({0});\">&#60;</a></li>", (((currnetPage / pageSize) - 1) * pageSize) + 1);
             }
-
-            // 이전 페이지로 가기 기능 적용
-            if (page <= 1)
+            for (int i = ((tmpPage - 1) * 5) + 1; i <= lastPage; i++)
             {
-                PagerHTML.Append("<a href=\"#\"> [<] </a>");
-            }
-            else
-            {
-                PagerHTML.Append(string.Format("<a href='javascript:;'  onclick=\"Common.GoPage({0});\"> [<] </a>", page - 1));
-            }
-
-            // 1,2,3,4,5,6,7,8,9,10
-            for (int i = currentBlodkEndNo - 9; i <= endNoOfLoop; i++)
-            {
-                if (i == page)
+                if (i == currnetPage)
                 {
-                    PagerHTML.Append(string.Format("<a href=\"#\" class=\"paging_on\">{0}</a>", i));
+                    html += string.Format("<li class=\"active\"><a href=\"javascript:;\">{0}</a></li>", i);
                 }
                 else
                 {
-                    PagerHTML.Append(string.Format("<a href=\"javascript:Common.GoPage({0})\">{0}</a>", i));
+                    html += string.Format("<li><a href=\"javascript:Common.GoPage({0})\">{0}</a></li>", i);
                 }
             }
-
-            // 다음 페이지로 가기 기능 적용
-            if (page == pageCount)
+            //다음가기
+            if (lastPage < pagecount)
             {
-                PagerHTML.Append("<a href=\"#\"> [>] </a>");
+                html += string.Format("<li><a href='javascript:;'>....</a></li>");
+                html += string.Format("<li><a href='javascript:;'  onclick=\"Common.GoPage({0});\">{0}</a></li>", pagecount);
+                html += string.Format("<li><a href='javascript:;'  onclick=\"Common.GoPage({0});\">&#62;</a></li>", (tmpPage * pageSize) + 1);
             }
             else
             {
-                PagerHTML.Append(string.Format("<a href='javascript:;' onclick=\"Common.GoPage({0});\"> [>] </a>", page + 1));
+                html += string.Format("<li class=\"disabled\"><a href=\"javascript:;\">&#62;</a></li>");
             }
-
-            // 다음 10개 기능 적용
-            if (pageCount > currentBlodkEndNo)
-            {
-                PagerHTML.Append(string.Format("<a href='javascript:;' onclick=\"Common.GoPage({0});\"> [>>]  </a>", pageCount));
-            }
-            else
-            {
-                PagerHTML.Append("<a href=\"#\"> [>>]  </a>");
-            }
-
-            PagerHTML.Append("</div>");
-            return PagerHTML.ToString();
+            html += "</ul>";
+            return html;
         }
 
         /// <summary>
@@ -160,19 +116,14 @@ namespace Happy.Utility
             }
             return returnTx;
         }
-        /// <summary>
-        /// 라이센스파일 업로드
-        /// </summary>
-        /// <param name="file">파일객체</param>
-        /// <returns>성공여부</returns>
-        public static bool LicenseFileUpload(HttpPostedFileBase file)
+        public static string ImgFileUpload(HttpPostedFile file, string dir)
         {
             bool isSucess = false;
-            string path = WebUtill.GetAppSetting("FtpDir");
+
             string fileRename = string.Format("{0}", DateTime.Now.ToString("yyyyMMddHHmmssff"));
             string[] arrOrigin = file.FileName.Split('.');
             string rename = string.Format("{0}.{1}", fileRename, arrOrigin[arrOrigin.Length - 1]);
-
+            string path = dir;
             try
             {
                 if (file != null && file.ContentLength > 0)
@@ -181,12 +132,12 @@ namespace Happy.Utility
                     isSucess = true;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 new CreateLog().WriteErrorLog(ex);
             }
             new CreateLog().FileUplodLog(rename, file.FileName, path, isSucess.ToString());
-            return isSucess;
+            return rename;
         }
         #region Email
         /// <summary>
@@ -290,5 +241,153 @@ namespace Happy.Utility
             return isTrue;
         } 
         #endregion
+        /// <summary>
+        /// Excel 파일 dataset으로 읽기
+        /// </summary>
+        /// <param name="file1"></param>
+        /// <returns></returns>
+        public static DataTable ExcelToDataSet(HttpPostedFileBase file1)
+        {
+            #region oledb
+            //DataSet ds = new DataSet();
+            //string type = String.Empty;
+            //string conn = string.Empty;
+            //if (file1 != null && file1.ContentLength > 0)
+            //{
+            //    var extension = Path.GetExtension(file1.FileName).Replace(".", "").ToLower();
+            //    string fileName = HttpContext.Current.Server.MapPath("/tmp/excel/") + DateTime.Now.ToString("yyyyMMddhhmmss") + "." + extension;
+            //    file1.SaveAs(fileName);
+            //    if (extension == "xls")
+            //    {
+            //        conn = "Provider=Microsoft.Jet.OLEDB.4.0;" +
+            //               "Data Source=\"" + fileName + "\";" +
+            //               "Mode=ReadWrite|Share Deny None;" +
+            //               "Extended Properties='Excel 8.0; HDR=YES; IMEX=1';" +
+            //               "Persist Security Info=False";
+            //    }
+            //    if (extension == "xlsx")
+            //    {
+            //        conn = "Provider=Microsoft.ACE.OLEDB.12.0;" +
+            //                "Data Source=\"" + fileName + "\";" +
+            //                "Mode=ReadWrite|Share Deny None;" +
+            //                "Extended Properties='Excel 12.0; HDR=YES; IMEX=1';" +
+            //                "Persist Security Info=False";
+            //    }
+            //    OleDbConnection ole = new OleDbConnection(conn);
+            //    ole.Open();
+            //    OleDbCommand cmd = new OleDbCommand();
+            //    cmd.Connection = ole;
+
+            //    DataTable dtSheet = ole.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
+            //    foreach (DataRow dr in dtSheet.Rows)
+            //    {
+            //        string sheetName = dr["TABLE_NAME"].ToString().Replace("'", "");
+
+            //        if (!sheetName.EndsWith("$"))
+            //            continue;
+            //        cmd.CommandText = "SELECT * FROM [" + sheetName + "]";
+
+            //        DataTable dt = new DataTable();
+            //        dt.TableName = sheetName;
+
+            //        OleDbDataAdapter da = new OleDbDataAdapter(cmd);
+            //        da.Fill(dt);
+            //        ds.Tables.Add(dt);
+            //    }
+            //    cmd = null;
+            //    ole.Close();
+            //    FileInfo file = new FileInfo(fileName);
+            //    file.Delete();
+            //}
+            //ds.Tables.Add(ReadAsDataTable(fileName)); 
+            #endregion
+            DataTable dataTable = new DataTable();
+            if (file1 != null && file1.ContentLength > 0)
+            {
+                var extension = Path.GetExtension(file1.FileName).Replace(".", "").ToLower();
+                string fileName = HttpContext.Current.Server.MapPath("/tmp/excel/") + DateTime.Now.ToString("yyyyMMddhhmmss") + "." + extension;
+                file1.SaveAs(fileName);
+                using (SpreadsheetDocument spreadSheetDocument = SpreadsheetDocument.Open(fileName, false))
+                {
+                    WorkbookPart workbookPart = spreadSheetDocument.WorkbookPart;
+                    IEnumerable<Sheet> sheets = spreadSheetDocument.WorkbookPart.Workbook.GetFirstChild<Sheets>().Elements<Sheet>();
+                    string relationshipId = sheets.First().Id.Value;
+                    WorksheetPart worksheetPart = (WorksheetPart)spreadSheetDocument.WorkbookPart.GetPartById(relationshipId);
+                    Worksheet workSheet = worksheetPart.Worksheet;
+                    SheetData sheetData = workSheet.GetFirstChild<SheetData>();
+                    IEnumerable<Row> rows = sheetData.Descendants<Row>();
+
+                    foreach (Cell cell in rows.ElementAt(0))
+                    {
+                        dataTable.Columns.Add(GetCellValue(spreadSheetDocument, cell));
+                    }
+
+                    foreach (Row row in rows)
+                    {
+                        DataRow dataRow = dataTable.NewRow();
+                        for (int i = 0; i < row.Descendants<Cell>().Count(); i++)
+                        {
+                            dataRow[i] = GetCellValue(spreadSheetDocument, row.Descendants<Cell>().ElementAt(i));
+                        }
+
+                        dataTable.Rows.Add(dataRow);
+                    }
+
+                }
+                dataTable.Rows.RemoveAt(0);
+            }
+            return dataTable;
+        }
+
+        private static string GetCellValue(SpreadsheetDocument document, Cell cell)
+        {
+            SharedStringTablePart stringTablePart = document.WorkbookPart.SharedStringTablePart;
+            string value = cell.CellValue == null ? "" : cell.CellValue.InnerXml;
+
+            if (cell.DataType != null && cell.DataType.Value == CellValues.SharedString)
+            {
+                return stringTablePart.SharedStringTable.ChildElements[Int32.Parse(value)].InnerText;
+            }
+            else
+            {
+                return value;
+            }
+        }
+
+        public static void DataTableToExcelDown(DataTable dt, List<string> header, string fileName)
+        {
+            if (dt.Rows.Count > 0 && dt.Columns.Count == header.Count)
+            {
+                var workbook = new XLWorkbook();
+                var worksheet = workbook.Worksheets.Add("Sheet1");
+                for (int i = 0; i < dt.Columns.Count; i++ )
+                {
+                    worksheet.Cell(1, i+1).Value = dt.Columns[i].ToString();
+                    worksheet.Cell(2, i+1).Value = header[i];
+                }
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    for (int j = 0; j < dt.Columns.Count; j++)
+                    {
+                        worksheet.Cell(i + 3, j+1).Value = dt.Rows[i][j].ToString();
+                    }
+                }
+                HttpResponse httpResponse = HttpContext.Current.Response;
+                httpResponse.Clear();
+                httpResponse.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                httpResponse.AddHeader("content-disposition", "attachment;filename=\"" + fileName + ".xlsx\"");
+                // Flush the workbook to the Response.OutputStream
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    workbook.SaveAs(memoryStream);
+                    memoryStream.WriteTo(httpResponse.OutputStream);
+                    memoryStream.Close();
+                }
+
+                httpResponse.End();
+            }
+        }
+
+
     }
 }

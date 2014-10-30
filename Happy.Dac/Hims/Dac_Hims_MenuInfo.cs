@@ -17,11 +17,12 @@ namespace Happy.Dac.Mis
         /// <param name="sort">순서</param>
         /// <param name="createUser">생성자</param>
         /// <returns></returns>
-        public int Insert_Menu_info(int parentIdx, string menuName, string menuUrl, string pageUrl, int sort, string createUser)
+        public int Insert_Menu_info(int parentIdx,int menu_depth, string menuName, string menuUrl, string pageUrl, int sort, string createUser)
         {
             string qry = "SP_MIS_INSERT_MENU_INFO";
             List<SqlParameter> ParamList = new List<SqlParameter>();
             ParamList.Add(new SqlParameter("@PARENT_IDX", parentIdx));
+            ParamList.Add(new SqlParameter("@MENU_DEPTH", menu_depth));
             ParamList.Add(new SqlParameter("@MENU_NAME", menuName));
             ParamList.Add(new SqlParameter("@MENU_URL", menuUrl));
             ParamList.Add(new SqlParameter("@PAGE_URL", pageUrl));
@@ -40,12 +41,13 @@ namespace Happy.Dac.Mis
         /// <param name="sort">순서</param>
         /// <param name="updateUser">수정자</param>
         /// <returns></returns>
-        public int Update_Menu_info(int menu_idx, int parentIdx, string menuName, string menuUrl, string pageUrl, int sort, string updateUser)
+        public int Update_Menu_info(int menu_idx, int parentIdx, int menu_depth, string menuName, string menuUrl, string pageUrl, int sort, string updateUser)
         {
             string qry = "SP_MIS_UPDATE_MENU_INFO";
             List<SqlParameter> ParamList = new List<SqlParameter>();
             ParamList.Add(new SqlParameter("@MENU_IDX", menu_idx));
             ParamList.Add(new SqlParameter("@PARENT_IDX", parentIdx));
+            ParamList.Add(new SqlParameter("@MENU_DEPTH", menu_depth));
             ParamList.Add(new SqlParameter("@MENU_NAME", menuName));
             ParamList.Add(new SqlParameter("@MENU_URL", menuUrl));
             ParamList.Add(new SqlParameter("@PAGE_URL", pageUrl));

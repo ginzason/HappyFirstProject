@@ -16,7 +16,7 @@ namespace Happy.Dac.Mis
         /// <param name="status">상태</param>
         /// <param name="createUser">등록자</param>
         /// <returns>행수</returns>
-        public int Insert_UserInfo(string id, string pwd, string name, int status, string createUser)
+        public int Insert_UserInfo(string id, string pwd, string name, string status, string createUser)
         {
             string qry = "SP_Mis_INSERT_USER_INFO";
             List<SqlParameter> ParamList = new List<SqlParameter>();

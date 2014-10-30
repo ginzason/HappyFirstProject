@@ -13,27 +13,21 @@ namespace Happy.Hims.Controllers
 {
     public class UserController : Controller
     {
-        public ActionResult Login(string param = "")
+        public ActionResult Login()
         {
-            //Hims에서 넘어왔을때
-            if (param != "")
+            if(Request["ReturnUrl"] != null && Request["ReturnUrl"] != "")
             {
-                UserInfo user = new UserInfo();
-                string desText = Security.TomochanSecurityDescription(param);
-                string[] arrDesText = desText.Split('/');
-                if (arrDesText.Length == 2)
-                {
-                    user.userid = arrDesText[0];
-                    user.username = arrDesText[1];
-                    CreateCookie(1, user);
-                    CreateMenu(user.userid);
-                    Response.Redirect("~/Home/Index");
-                }
+                ViewBag.url = HttpUtility.UrlDecode(Request["ReturnUrl"]);
+            }
+            if(User.Identity.IsAuthenticated)
+            {
+                Response.Redirect(Url.Action("Index","Home"));
             }
             return View();
         }
+
         [HttpPost]
-        public JsonResult LoginProc(string id= "", string pwd = "")
+        public JsonResult LoginProc(string id= "", string pwd = "", string geo = "")
         {
             int count = 0;
             DataSet ds = new Dac_Hims_UserInfo().Select_UserInfo(id);
@@ -43,13 +37,17 @@ namespace Happy.Hims.Controllers
                 if(Security.TomochanSecurityDescription(pwd) == Security.RsaDescription(userinfo.userpwd)
                     && userinfo.user_status == "AL")
                 {
-                    InsertLoginHistory(id, "S");
+                    InsertLoginHistory(id, "S", geo);
                     count = CreateCookie(count, userinfo);
                 }
                 else
                 {
-                    InsertLoginHistory(id, "F");
+                    InsertLoginHistory(id, "F", geo);
                 }
+            }
+            else
+            {
+                InsertLoginHistory(id, "F", geo);
             }
             return Json(count);
         }
@@ -90,10 +88,10 @@ namespace Happy.Hims.Controllers
             Response.Cookies.Add(myCookie);
             //Session.Add("usermenuList", usermenuList);
         }
-        private void InsertLoginHistory(string id, string result)
+        private void InsertLoginHistory(string id, string result, string geo)
         {
             string ip = Request.UserHostAddress == "::1" ? "127.0.0.1" : Request.UserHostAddress;
-            new Dac_Hims_LoginHis().Insert_Login_His(id, result, "", ip);
+            new Dac_Hims_LoginHis().Insert_Login_His(id, result, geo, ip);
         }
 
         public ActionResult Deny()

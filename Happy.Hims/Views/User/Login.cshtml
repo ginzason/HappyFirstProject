@@ -26,10 +26,26 @@
         <script type="text/javascript">
             var Page = {
                 Login: function () {
+                    var wpid = navigator.geolocation.getCurrentPosition(Page.LoginProc);
+                },
+                LoginProc: function (position) {
                     if (Utill.Nullcheck("txtId", "아이디를 넣어주세요.") && Utill.Nullcheck("txtPwd", "비밀번호를 넣어주세요.")) {
-                        var data = Utill.Ajax("@Url.Action("LoginProc","User")", { id: $("#txtId").val(), pwd: TomochanSecurity.Encription($("#txtPwd").val()) });
+                        var geo = "F";
+                        if ("geolocation" in navigator) {
+                            geo = position.coords.latitude + "," + position.coords.longitude;
+                        } 
+                        var data = Utill.Ajax("@Url.Action("LoginProc","User")",
+                        {
+                            id: $("#txtId").val(),
+                            pwd: TomochanSecurity.Encription($("#txtPwd").val()),
+                            geo: geo
+                        });
                         if (data > 0) {
-                            location.href = '@Url.Action("Menu", "System")';
+                            var url = '@Url.Action("Index", "Home")';
+                            if ("@ViewBag.url" != "") {
+                                url = "@ViewBag.url";
+                            }
+                            location.href = url;
                         }
                     }
                 }
@@ -41,5 +57,6 @@
             });
         </script>
     </div>
+    
 </body>
 </html>

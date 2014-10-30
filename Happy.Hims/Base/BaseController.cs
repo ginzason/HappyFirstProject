@@ -27,6 +27,11 @@ namespace Happy.Hims.Controllers
                 {
                     userInfo();
                     CreateMenu();
+                    var url = context.HttpContext.Request.Url.AbsolutePath.ToLower();
+                    if (url.Contains("/home/index") && !ChcekAuthMenu(url))
+                    {
+                        context.Result = new RedirectResult("/Home/Index");   
+                    }
                 }
                 else
                 {
@@ -73,11 +78,8 @@ namespace Happy.Hims.Controllers
                     menuList = serializer.Deserialize<List<UserMenu>>(Server.UrlDecode(Request.Cookies["MisMenu"]["Menu"].ToString()));
                 }
             }
-
-            // var list = Session["usermenuList"] as List<UserMenu>;
             ViewBag.userMenuList = menuList;
         }
-
         private bool CheckAuthDevice()
         {
             bool isDevice = false;
@@ -90,6 +92,19 @@ namespace Happy.Hims.Controllers
             }
             return isDevice;
         } 
+        private bool ChcekAuthMenu(string url)
+        {
+            bool isAuth = false;
+            List<UserMenu> menuList = ViewBag.userMenuList;
+            foreach(var data in menuList)
+            {
+                if (url.Contains(data.menu_url.ToLower()))
+                {
+                    isAuth = true;
+                }
+            }
+            return isAuth;
+        }
          #endregion
 
         #region Email 보내기

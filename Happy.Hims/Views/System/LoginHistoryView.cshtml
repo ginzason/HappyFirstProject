@@ -1,0 +1,59 @@
+﻿@{
+    Layout = "~/Views/Shared/_SystemLayout.cshtml";
+}
+@model System.Data.DataSet
+<div style="display:none;width: 100%; height:500px;" id="map_canvas"></div>
+<div style="text-align:center; margin: 5px 0 15px 0;">
+    <button type="button" class="btn btn-default btn-sm" id="btnClose"><span class="glyphicon glyphicon-circle-arrow-up"></span> CLOSE</button>
+</div>
+<table class="table table-striped">
+    <tr>
+        <th style="width: 25%; text-align: center;">Date</th>
+        <th style="width: 20%; text-align: center;">ID</th>
+        <th style="width: 20%; text-align: center;">Result</th>
+        <th style="width: 25%; text-align: center;">IP</th>
+        <th style="width:10%;">&nbsp;</th>
+    </tr>
+    @foreach (System.Data.DataRow data in Model.Tables[0].Rows)
+    {
+        <tr>
+            <td style="text-align:center;">@string.Format("{0:yyyy-MM-dd HH:mm:ss}", data["CREATE_DATE"])</td>
+            <td>@data["USERID"].ToString()</td>
+            <td style="text-align:center;">@(data["RESULT"].ToString() == "S" ? "성공" : "실패")</td>
+            <td style="text-align:center;">@data["IPADDR"].ToString()</td>
+            <td style="text-align:right;">
+                <button type="button" class="btn btn-default btn-sm" onclick="Map('@data["MACADDR"].ToString()');"><span class="glyphicon glyphicon-film"></span> Map</button>
+            </td>
+        </tr>
+    }
+</table>
+
+@section scripts{
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDW5ugn08JB6Iy9Rk3Q0hWRAQ5Y6qIpziM&sensor=SET_TO_TRUE_OR_FALSE"></script>
+    <script type="text/javascript">
+        $(function(){
+            $("#btnClose").hide();
+            $("#btnClose").click(function(){
+                $("#map_canvas").slideUp();
+            })
+        })
+        function Map(geo) {
+            $('#map_canvas').slideDown(function () {
+                var arrlatlng = geo.split(',');
+                var latlng = new google.maps.LatLng(arrlatlng[0], arrlatlng[1]);
+                var mapOptions = {
+                    center: latlng,
+                    zoom: 18,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+                var marker = new google.maps.Marker({
+                    position: latlng,
+                    map: map,
+                    title: "Hello World!"
+                });
+                $("#btnClose").show();
+            });
+        }
+    </script>
+}

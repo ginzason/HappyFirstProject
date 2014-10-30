@@ -1,0 +1,27 @@
+﻿@{
+    Layout = "~/Views/Shared/_SystemLayout.cshtml";
+}
+<div class="row">
+    <input type="datetime" id="txtSDate" /> ~ 
+    <input type="datetime" id="txtEDate" />
+</div>
+@section scripts{
+<script type="text/javascript">
+    $(function () {
+        $("#txtSDate").datepicker({
+            numberOfMonths: 2,
+            minDate: -0,
+            onClose: function (selectedDate) {
+                $("#txtEDate").datepicker("option", "minDate", selectedDate);
+            }
+        });
+        $("#txtEDate").datepicker({
+            numberOfMonths: 2,
+            minDate: -0,
+            onClose: function (selectedDate) {
+                $("#txtSDate").datepicker("option", "maxDate", selectedDate);
+            }
+        });
+    });
+</script>
+}

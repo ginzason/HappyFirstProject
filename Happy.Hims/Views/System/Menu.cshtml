@@ -15,11 +15,11 @@
         </tr>
         @if (Model != null)
         {
-            foreach (var menuTop in Model.Where(x => x.parent_idx == 0).OrderBy(x => x.sort_order))
+            foreach (var menuTop in Model.Where(x => x.parent_idx == 0 && x.menu_depth == 1).OrderBy(x => x.sort_order))
             {
                 <tr onclick="Page.RowClick(@menuTop.menu_idx, this)" style="cursor:pointer;">
                     <td class="warning">
-                        @menuTop.menu_name
+                       <span class="badge">1</span> @menuTop.menu_name
                         <input type="hidden" name="hidPidx" value="@menuTop.parent_idx" />
                         <input type="hidden" name="hidMIdx" value="@menuTop.menu_idx" />
                     </td>
@@ -33,11 +33,11 @@
                         @menuTop.sort_order
                     </td>
                 </tr>
-                foreach (var menuBottom in Model.Where(x => x.parent_idx == menuTop.menu_idx).OrderBy(x => x.sort_order))
+                foreach (var menuBottom in Model.Where(x => x.parent_idx == menuTop.menu_idx && x.menu_depth == 2).OrderBy(x => x.sort_order))
                 {
                     <tr onclick="Page.RowClick(@menuBottom.menu_idx, this)" style="cursor:pointer;">
                         <td>
-                            &nbsp;&nbsp;&nbsp;&nbsp; @menuBottom.menu_name
+                            &nbsp;&nbsp;&nbsp;&nbsp; <span class="badge">2</span> @menuBottom.menu_name
                             <input type="hidden" name="hidPidx" value="@menuBottom.parent_idx" />
                             <input type="hidden" name="hidMIdx" value="@menuBottom.menu_idx" />
                         </td>
@@ -51,6 +51,25 @@
                             @menuBottom.sort_order
                         </td>
                     </tr>
+                    foreach (var menuLast in Model.Where(x => x.parent_idx == menuBottom.menu_idx && x.menu_depth == 3).OrderBy(x => x.sort_order))
+                    {
+                        <tr onclick="Page.RowClick(@menuLast.menu_idx, this)" style="cursor:pointer;">
+                            <td>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="badge">3</span> @menuLast.menu_name
+                                <input type="hidden" name="hidPidx" value="@menuLast.parent_idx" />
+                                <input type="hidden" name="hidMIdx" value="@menuLast.menu_idx" />
+                            </td>
+                            <td>
+                                @menuLast.menu_url
+                            </td>
+                            <td>
+                                @menuLast.page_url
+                            </td>
+                            <td style="text-align:right;">
+                                @menuLast.sort_order
+                            </td>
+                        </tr>
+                    }
                 }
             }
         }
@@ -75,11 +94,17 @@
                                 <button type="button" class="btn btn-default" onclick="Page.ToggleButtonClick(@menuTop.menu_idx, '@menuTop.menu_name')">@menuTop.menu_name</button>
                                 }
                             </div>
+                             <div class="btn-group">
+                                @foreach (var menuBottom in Model.Where(x => x.menu_depth == 2).OrderBy(x => x.sort_order))
+                                {
+                                <button type="button" class="btn btn-default" onclick="Page.ToggleButtonClick(@menuBottom.menu_idx, '@menuBottom.menu_name')">@menuBottom.menu_name</button>
+                                }
+                            </div>
                         }
                         <br />
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" id="ckTop"> 최상의 메뉴
+                                <input type="checkbox" id="ckTop"> Top 메뉴
                             </label>
                         </div>
                         <input type="text" class="form-control " id="txtParent" placeholder="선택하세요." role="txtT" readonly>

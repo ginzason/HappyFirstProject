@@ -23,12 +23,6 @@ namespace Happy.Hims.Controllers
         {
             return View();
         }
-        [HttpPost]
-        public JsonResult Pad()
-        {
-            string param = string.Format("{0}/{1}", UserId, Server.UrlDecode(UserName));
-            return Json(param);
-        }
 
     }
 }

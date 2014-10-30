@@ -11,6 +11,7 @@ using System.Web.Script.Serialization;
 using Newtonsoft.Json;
 using Happy.Dac.Com;
 using Happy.Dac.Hims;
+using System.IO;
 namespace Happy.Hims.Controllers
 {
     public class SystemController : BaseController
@@ -22,16 +23,16 @@ namespace Happy.Hims.Controllers
             return View(usermenuList);
         }
         [HttpPost]
-        public JsonResult MenuSave(int menu_idx = 0, int parent_idx = 0, string menu_name = "", string menu_url = "", string page_name = "", int sort_order = 0)
+        public JsonResult MenuSave(int menu_idx = 0,int menu_depth = 0, int parent_idx = 0, string menu_name = "", string menu_url = "", string page_name = "", int sort_order = 0)
         {
             int row = 0;
             if (menu_idx == 0)
             {
-                row = new Dac_Hims_MenuInfo().Insert_Menu_info(parent_idx, menu_name, menu_url, page_name, sort_order, UserId);
+                row = new Dac_Hims_MenuInfo().Insert_Menu_info(parent_idx, menu_depth, menu_name, menu_url, page_name, sort_order, UserId);
             }
             else
             {
-                row = new Dac_Hims_MenuInfo().Update_Menu_info(menu_idx, parent_idx, menu_name, menu_url, page_name, sort_order, UserId);
+                row = new Dac_Hims_MenuInfo().Update_Menu_info(menu_idx, menu_depth, parent_idx, menu_name, menu_url, page_name, sort_order, UserId);
             }
             return Json(row);
         }
@@ -146,5 +147,34 @@ namespace Happy.Hims.Controllers
             return Json(row);
         }
         #endregion
+        public ActionResult UserList()
+        {
+            List <UserInfo> model = DataUtill.ConvertToList<UserInfo>(new Dac_Hims_UserInfo().Select_UserInfoList("", 1, 9999).Tables[0]);
+            return View(model);
+        }
+        [HttpPost]
+        public JsonResult ValidationId(string id="")
+        {
+            List<UserInfo> model = DataUtill.ConvertToList<UserInfo>(new Dac_Hims_UserInfo().Select_UserInfoList("", 1, 9999).Tables[0]);
+            var filterModel = model.Where(x => x.userid == id);
+            return Json(filterModel.Count());
+        }
+        [HttpPost]
+        public JsonResult AddUser(string id = "", string name = "", string pwd = "")
+        {
+            int row = new Dac_Hims_UserInfo().Insert_UserInfo(id, Security.RsaEncription(pwd), name, "AL", UserId);
+            return Json(row);
+        }
+        [HttpPost]
+        public JsonResult PwdEdit(string id = "", string pwd = "")
+        {
+            int row = new Dac_Hims_UserInfo().Update_UserInfoPwd(id, Security.RsaEncription(Security.TomochanSecurityDescription(pwd)), UserId);
+            return Json(row);
+        }
+        public ActionResult LoginHistoryView(string id = "")
+        {
+            DataSet ds = new Dac_Hims_LoginHis().Select_Login_His(id);
+            return View(ds);
+        }
     }
 }

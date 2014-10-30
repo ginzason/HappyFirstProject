@@ -28,6 +28,9 @@
     
     <div class="container-fluid" style="margin: 0 1px 0 1px;">
         @RenderBody()
+        <div class="row">
+            @ViewBag.Url
+        </div>
     </div>
 
     @Scripts.Render("~/bundles/jquery")
@@ -38,12 +41,7 @@
     @RenderSection("scripts", required: false)
     <script type="text/javascript">
         var Master = {
-            GotoPad: function () {
-                var url = '@WebUtill.GetAppSetting("PadSite")';
-                var data = Utill.Ajax('@Url.Action("Pad","Home")');
-                url += "?param=" + TomochanSecurity.Encription(data);
-                location.href = url;
-            }
+
         }
     </script>
 </body>

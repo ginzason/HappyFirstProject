@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Excel";
+    Layout = "~/Views/Shared/_SystemLayout.cshtml";
+}
+<form action="/Test/ExcelUpload" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <input type="file" name="file1" id="file1" />
+        <button id="btnUpload">Upload</button>
+        <button type="button" id="btnDown">Down</button>
+    </div>
+</form>
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $("#btnDown").click(function () {
+                window.open("@Url.Action("ExcelDown", "Test")");
+            })
+        });
+    </script>
+}

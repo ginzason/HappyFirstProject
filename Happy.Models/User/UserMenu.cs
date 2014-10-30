@@ -5,6 +5,7 @@ namespace Happy.Models
     {
         public int menu_idx { get; set; }
         public int parent_idx { get; set; }
+        public int menu_depth { get; set; }
         public string menu_name { get; set; }
         public string menu_url { get; set; }
         public string page_url { get; set; }
@@ -15,6 +16,7 @@ namespace Happy.Models
     {
         public int menu_idx { get; set; }
         public int parent_idx { get; set; }
+        public int menu_depth { get; set; }
         public int au_idx { get; set; }
         public string menu_name { get; set; }
         public string menu_url { get; set; }

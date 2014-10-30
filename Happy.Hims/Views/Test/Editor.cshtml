@@ -1,0 +1,27 @@
+﻿@{
+    Layout = "~/Views/Shared/_SystemLayout.cshtml";
+}
+<div class="row">
+    <textarea id="txtContent" name="txtContent" style="width:100%; height:250px;"></textarea>
+    <button onclick="Page.submitContents();">click</button>
+</div>
+
+<script src=@Url.Content("~/Scripts/editor/js/HuskyEZCreator.js")></script>
+<script src=@Url.Content("~/Scripts/editor/js/jindo.min.js")></script>
+
+<script type="text/javascript">
+    var oEditors = [];
+    nhn.husky.EZCreator.createInIFrame({
+        oAppRef: oEditors,
+        elPlaceHolder: "txtContent",
+        sSkinURI: "@Url.Content("~/Scripts/editor/SmartEditor2Skin.html")",
+        fCreator: "createSEditor2"
+    });
+    var Page = {
+        submitContents: function (elClickedObj) {
+            oEditors.getById["txtContent"].exec("UPDATE_CONTENTS_FIELD", []);
+            console.log(document.getElementById("txtContent").value);
+        }
+    }
+</script>
+
