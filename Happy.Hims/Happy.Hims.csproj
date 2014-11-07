@@ -130,8 +130,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Base\BaseController.cs" />
+    <Compile Include="Controllers\CarController.cs" />
+    <Compile Include="Controllers\DaddyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MommyController.cs" />
     <Compile Include="Controllers\PadController.cs" />
+    <Compile Include="Controllers\ReservController.cs" />
+    <Compile Include="Controllers\SiteController.cs" />
+    <Compile Include="Controllers\StaticsController.cs" />
     <Compile Include="Controllers\SystemController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -302,7 +308,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Shared\_Menu.cshtml" />
+    <Content Include="Views\Shared\_TopMenu.cshtml" />
     <Content Include="Views\Shared\_SystemLayout.cshtml" />
     <Content Include="Views\Shared\_SystemMenu.cshtml" />
     <Content Include="Views\System\Auth.cshtml" />
@@ -326,6 +332,8 @@
     <Content Include="Views\Test\Excel.cshtml" />
     <Content Include="Views\System\LoginHistoryView.cshtml" />
     <Content Include="Views\Shared\_PadLayout.cshtml" />
+    <Content Include="Views\Test\WeekDate.cshtml" />
+    <Content Include="Views\Shared\_LeftMenu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

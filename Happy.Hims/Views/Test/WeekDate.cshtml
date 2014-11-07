@@ -1,0 +1,123 @@
+﻿@{
+    Layout = "~/Views/Shared/_SystemLayout.cshtml";
+    int YYYY = int.Parse(ViewBag.YYYY);
+}
+@model List<Happy.Models.Web.Calander.Weekend>
+<div class="row">
+    @for (int i = 0; i < 5; i++)
+    {
+        int year = DateTime.Now.Year + i;
+        if (YYYY == year)
+        {
+            <button type="button" class="btn btn-danger" onclick="Page.SelectYYYY('@year')">@year</button>
+        }
+        else
+        {
+            <button type="button" class="btn" onclick="Page.SelectYYYY('@year')">@year</button>
+        }
+
+    }
+</div>
+<br />
+<div class="row">
+    <p>@(YYYY)년에 공휴일로 설정된 날은 @(Model.Count)일 입니다.</p>
+</div>
+<form>
+    <div class="row">
+        <table class="table table-bordered" style="width:100%;">
+
+            @for (int i = 1; i <= 12; i++)
+            {
+                DateTime now = new DateTime(YYYY, i, 1);
+                int endDay = now.AddMonths(1).AddDays(-1).Day;
+                <tr>
+                    <td style="text-align:center;">@i 월</td>
+                    @for (int j = 1; j <= endDay; j++)
+                    {
+                        int count = 0;
+                        string dd = j.ToString().Length == 1 ? "0" + j.ToString() : j.ToString();
+                        string mm = i.ToString().Length == 1 ? "0" + i.ToString() : i.ToString();
+                        string curDate = YYYY.ToString() + mm + dd;
+                        foreach (var data in Model)
+                        {
+                            string dbDate = data.yyyy + data.mm + data.dd;
+                            if (dbDate == curDate)
+                            {
+                                count++;
+                            }
+                        }
+                        if (count > 0)
+                        {
+                            <td style="cursor:pointer; text-align:center; background-color:tomato;" onclick="Page.ClickCell(this,'@curDate');">
+                                @j
+                                <input type="hidden" name="hidYYMMDD" value="@curDate" />
+                            </td>
+                        }
+                        else
+                        {
+                            <td style="cursor:pointer; text-align:center;" onclick="Page.ClickCell(this,'@curDate');">
+                                @j
+                                <input type="hidden" name="hidYYMMDD" />
+                            </td>
+                        }
+                    }
+                    @if (endDay == 28)
+                    {
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    }
+                    @if (endDay == 29)
+                    {
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    }
+                    @if (endDay == 30)
+                    {
+                        <td>&nbsp;</td>
+                    }
+                </tr>
+            }
+        </table>
+    </div>
+
+    <div class="row" style="text-align:center;">
+        <button type="button" class="btn" id="btnAdd">등록</button>
+        <button type="button" class="btn" id="btnCancle">취소</button>
+        <input type="hidden" name="hidYY" value="@YYYY" />
+    </div>
+</form>
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $("#btnCancle").click(function () {
+                Page.BtnCancle_Click();
+            });
+            $("#btnAdd").click(function () {
+                Page.BtnAdd_Click();
+            });
+        });
+        var Page = {
+            SelectYYYY: function (yyyy) {
+                location.href = "@Url.Action("WeekDate")?year=" + yyyy;
+            },
+            ClickCell: function (e, yymmdd) {
+                var ymd = $(e).children("input[name='hidYYMMDD']").val();
+                if (ymd != '') {
+                    $(e).children("input[name='hidYYMMDD']").val('');
+                    $(e).css("background-color", "white");
+                }
+                else {
+                    $(e).children("input[name='hidYYMMDD']").val(yymmdd);
+                    $(e).css("background-color", "tomato");
+                }
+            },
+            BtnCancle_Click: function () {
+                location.href = "@Url.Action("WeekDate")?year=@YYYY";
+            },
+            BtnAdd_Click: function () {
+                $("form").attr("action", "WeekDateSave").attr("method", "post").submit();
+            }
+        }
+    </script>
+}

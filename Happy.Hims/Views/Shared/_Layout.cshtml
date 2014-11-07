@@ -6,19 +6,42 @@
     <title>@ViewBag.Title</title>
     <link href="@Url.Content("~/Content/themes/Blitzer/jquery-ui.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Content/pnotify.custom.min.css")" rel="stylesheet" />
-
-></head>
+    <style type="text/css">
+        div { border: 1px solid red;
+        }
+        #divWrapp{width:100%;}
+        #divLeft {
+            width: 10%;
+            float: left;
+        }
+        #divRight {
+            width: 88%;
+            float: left;
+        }
+        #divContent #divTop {
+            width: 100%;
+        }
+    </style>
+</head>
 <body>
-    <div style="border:solid 1px #cccccc;">
-        @Html.Partial("_Menu")
+    <div id="divWrapp">
+        <div id="divLeft">
+            @Html.Partial("_LeftMenu")
+        </div>
+        <div id="divRight">
+            <div id="divTop">
+                @Html.Partial("_TopMenu")
+            </div>
+            <div id="divContent">sdfsdfsd</div>
+        </div>
     </div>
+
     @RenderBody()
-
-
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/Common")
     <script src="@Url.Content("~/Scripts/pnotify.custom.min.js")"></script>
+    @RenderSection("topscripts", required: false)
     @RenderSection("scripts", required: false)
 </body>
 </html>

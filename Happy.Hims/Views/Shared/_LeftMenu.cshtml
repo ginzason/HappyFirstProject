@@ -1,0 +1,24 @@
+﻿@{
+    List<Happy.Models.UserMenu> menuList = new List<Happy.Models.UserMenu>();
+    menuList = ViewBag.userMenuList;
+}
+<style type="text/css">
+    .top {
+        width: 200px;
+        height: 100px;
+        display: inline;
+        border: 1px solid #cccccc;
+        padding: 10px 10px 10px 10px;
+        margin-left: 20px;
+    }
+</style>
+<li style="width:100%;">
+    <ul>
+    @foreach (var menuTop in menuList.Where(x => x.parent_idx == 1).OrderBy(x => x.sort_order))
+    {
+        <li>
+            <a href="@menuTop.menu_url">@menuTop.menu_name</a>
+        </li>
+    }
+    </ul>
+</div>

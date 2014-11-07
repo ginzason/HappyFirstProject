@@ -49,6 +49,7 @@
     <Compile Include="Hims\Dac_Hims_MenuInfo.cs" />
     <Compile Include="Hims\Dac_Hims_UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Web\Calander\Dac_Web_Weekend.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Happy.Utility\Happy.Utility.csproj">
@@ -56,9 +57,7 @@
       <Name>Happy.Utility</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Web\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,17 +1,15 @@
-﻿using Happy.Utility;
-using Newtonsoft.Json;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml;
-using System.Net.Mail;
-using System.Text;
-using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Data.OleDb;
-using System.Data;
 using Happy.Dac.Mis;
+using Happy.Dac.Web;
+using Happy.Models.Web.Calander;
+using Happy.Utility;
+using Newtonsoft.Json;
 
 namespace Happy.Hims.Controllers
 {
@@ -173,7 +171,42 @@ namespace Happy.Hims.Controllers
             WebUtill.DataTableToExcelDown(new Dac_Hims_LoginHis().Select_Login_His("admin").Tables[0], list, "excel");
             return Redirect("Excel");
         }
-       
+        public ActionResult WeekDate(string year = "")
+        {
+            ViewBag.YYYY = year == "" ? DateTime.Now.Year.ToString() : year;
+            List<Weekend> model = DataUtill.ConvertToList<Weekend>(new Dac_Web_Weekend().Select_Weekend(year).Tables[0]);
+            return View(model);
+        }
+        [HttpPost]
+        public RedirectResult WeekDateSave()
+        {
+            int count = 0;
+            string yyyy = Request["hidYY"];
+            bool isDel = false;
+            Dac_Web_Weekend dac = new Dac_Web_Weekend();
+            string[] requestValue = Request["hidYYMMDD"].Split(',');
+            if(requestValue.Length > 0)
+            {
+                foreach(var data in requestValue)
+                {
+                    if(data != "")
+                    {
+                        count++;
+                        if(!isDel)
+                        {
+                            dac.Delete_Weekend(data.Substring(0, 4));
+                            isDel = true;
+                        }
+                        dac.Insert_Weekend(data.Substring(0, 4), data.Substring(4, 2), data.Substring(6, 2), UserId);
+                    }
+                }
+                if(count == 0)
+                {
+                    dac.Delete_Weekend(yyyy);
+                }
+            }
 
+            return Redirect("/Test/WeekDate?year=" + yyyy);
+        }
     }
 }
