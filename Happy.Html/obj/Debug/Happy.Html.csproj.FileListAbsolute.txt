@@ -1,6 +1,0 @@
-D:\Dev\Happy.Solutions\Happy.First.Project\Project_Source\HappyFirstProject\Happy.Html\bin\Happy.Html.dll.config
-D:\Dev\Happy.Solutions\Happy.First.Project\Project_Source\HappyFirstProject\Happy.Html\bin\Happy.Html.dll
-D:\Dev\Happy.Solutions\Happy.First.Project\Project_Source\HappyFirstProject\Happy.Html\bin\Happy.Html.pdb
-D:\Dev\Happy.Solutions\Happy.First.Project\Project_Source\HappyFirstProject\Happy.Html\obj\Debug\Happy.Html.csprojResolveAssemblyReference.cache
-D:\Dev\Happy.Solutions\Happy.First.Project\Project_Source\HappyFirstProject\Happy.Html\obj\Debug\Happy.Html.dll
-D:\Dev\Happy.Solutions\Happy.First.Project\Project_Source\HappyFirstProject\Happy.Html\obj\Debug\Happy.Html.pdb
