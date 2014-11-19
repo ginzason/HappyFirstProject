@@ -63,7 +63,7 @@ namespace Happy.Hims.Controllers
             FormsAuthenticationTicket newticket = new FormsAuthenticationTicket(1,
                                                           "Mis",
                                                           DateTime.Now,
-                                                          DateTime.Now.AddHours(WebUtill.RequestByInt("Cookie")),
+                                                          DateTime.Now.AddHours(WebUtill.GetAppSettingByDouble("Cookie")),
                                                           false, // always persistent
                                                           data,
                                                           FormsAuthentication.FormsCookiePath);
@@ -84,7 +84,7 @@ namespace Happy.Hims.Controllers
 
             HttpCookie myCookie = new HttpCookie("MisMenu");
             myCookie["Menu"] = Server.UrlEncode(data);
-            myCookie.Expires = DateTime.Now.AddHours(WebUtill.RequestByInt("Cookie"));
+            myCookie.Expires = DateTime.Now.AddHours(WebUtill.GetAppSettingByDouble("Cookie"));
             Response.Cookies.Add(myCookie);
             //Session.Add("usermenuList", usermenuList);
         }

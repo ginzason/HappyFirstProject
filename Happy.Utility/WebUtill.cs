@@ -116,6 +116,42 @@ namespace Happy.Utility
             }
             return returnTx;
         }
+        public static int GetAppSettingByInt(string key)
+        {
+            int returnInt = 0;
+            string returnTx = string.Empty;
+            if (ConfigurationManager.AppSettings[key] != null)
+            {
+                returnTx = ConfigurationManager.AppSettings[key].ToString();
+                try
+                {
+                    returnInt = int.Parse(returnTx);
+                }
+                catch(Exception ex)
+                {
+                    returnInt = 0;
+                }
+            }
+            return returnInt;
+        }
+        public static double GetAppSettingByDouble(string key)
+        {
+            double doubleReturn = 0;
+            string returnTx = string.Empty;
+            if (ConfigurationManager.AppSettings[key] != null)
+            {
+                returnTx = ConfigurationManager.AppSettings[key].ToString();
+                try
+                {
+                    doubleReturn = double.Parse(returnTx);
+                }
+                catch (Exception ex)
+                {
+                    doubleReturn = 0;
+                }
+            }
+            return doubleReturn;
+        }
         public static string ImgFileUpload(HttpPostedFile file, string dir)
         {
             bool isSucess = false;

@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Happy.Utility", "Happy.Util
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Happy.Models", "Happy.Models\Happy.Models.csproj", "{6FE0009A-2A46-4274-A4C6-82D6CB94CF0A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Happy.Html", "Happy.Html\Happy.Html.csproj", "{A8A26847-CEBE-4000-B8DB-A6E0A8AA5CF0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{6FE0009A-2A46-4274-A4C6-82D6CB94CF0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FE0009A-2A46-4274-A4C6-82D6CB94CF0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FE0009A-2A46-4274-A4C6-82D6CB94CF0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8A26847-CEBE-4000-B8DB-A6E0A8AA5CF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8A26847-CEBE-4000-B8DB-A6E0A8AA5CF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8A26847-CEBE-4000-B8DB-A6E0A8AA5CF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8A26847-CEBE-4000-B8DB-A6E0A8AA5CF0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
