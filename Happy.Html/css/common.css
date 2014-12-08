@@ -1,0 +1,134 @@
+/* make by Ginzason */
+@charset "utf-8";
+
+@font-face{font-family:nanum;
+src:url(../fonts/NanumGothic.eot);src:local(※),url(../font/NanumGothic.woff) format('woff')
+}
+@font-face{font-family:nanumb;
+font-weight: bold;
+src:url(../fonts/NanumGothicBold.eot);src:local(※),url(../font/NanumGothicBold.woff) format('woff')
+}
+
+/* reset */
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,textarea,p,blockquote,th,td,input,select,textarea,button {margin:0;padding:0;}
+h1,h2,h3,h4,h5,h6{font-weight:normal;}
+fieldset,img{border:0 none;}
+dl,ul,ol,menu,li {list-style:none;}
+blockquote, q {quotes: none;}
+blockquote:before, blockquote:after,q:before, q:after {content:'';content:none;}
+input,select,textarea,button {vertical-align:middle;}
+button {border:0 none;background-color:transparent;cursor:pointer;}
+body {background:#fff;}
+body,th,td,input,select,textarea,button,a{font-size:12px;line-height:1.5;font-family:'Roboto','Nanum Barun Gothic','nanum','나눔고딕','Malgun Gothic','맑은고딕','돋움',dotum,sans-serif,Arial;}
+a {color:#333;text-decoration:none;font-family: 'Roboto','Nanum Barun Gothic','nanum','나눔고딕','돋움',}
+a:active, a:hover {text-decoration:none;}
+address,caption,cite,code,dfn,em,var {font-style:normal;font-weight:normal;}
+caption,legend{display:none;}
+table {border-collapse: collapse;}
+html,body{height:100%;}
+
+/* html5 reset*/
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block;}
+
+/* global */
+.screen_out {display:block;overflow:hidden;position:absolute;left:-9999px;width:1px;height:1px;font-size:0;line-height:0;text-indent:-9999px;}
+.ir_pm {display:block;overflow:hidden;font-size:0px;line-height:0;text-indent:-9999px;} 
+
+.clb{clear:both;}
+.fl{float:left;}
+
+/* login */
+.wrap-login{position:relative;width:100%;min-height:768px;height:100%;background:#4b515c;}
+.box-login{position: absolute;top:50%;left:50%;width:400px;height:400px;margin:-200px 0 0 -200px;}
+
+.logo-hims{width:180px;height:79px;margin:0px auto;background: url(../img/logo_hims.png) no-repeat;}
+.fld-login{position:relative;margin-top:30px;}
+
+.box-login-input{margin-bottom:20px;}
+.inp-login-user{width:390px;height:60px;padding-left:10px;border: 0;background: #fff;color:#999;font-size:16px;}
+.inp-login-pw{width:390px;height:60px;padding-left:10px;border: 0;background: #fff;color:#999;font-size:16px;}
+
+.lab-id{margin-left:10px;color: #a4a9ae;font-size:14px;}
+
+.box-cookie{height:40px;margin-bottom:25px;}
+.box-cookie:after{clear: both;content: '';display: block;}
+
+.box-save{float: left;}
+.box-btn-r{float: right;}
+
+/* layout */
+/* 좌측 네비 */
+.aside_left{position:fixed;height:100%;width:160px;background:#4b515c;}
+/* 컨텐츠 */
+.wrap_section{position:relative;}
+.wrap_contents{padding-left:160px;}
+.article_contents{padding-left:40px;}
+
+
+/* button */
+.btn-login{width:128px;height:40px;background: #ed5565;font-size:15px;font-weight: bold;text-align:center;color:#fff;}
+
+/* checkbox, radio */
+.chk{background: url(../img/chk_off.png) left center no-repeat;}
+.chk_on{background: url(../img/chk_on.png) left center no-repeat;}
+.chk_hold{background: url(../img/chk_hold.png) left center no-repeat;}
+input[type="checkbox"]{opacity: 0; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=00)";  filter: alpha(opacity=00);}
+/* bullet  */
+.bull-star{padding-left:10px;background: url(../img/bull_star.png) left center no-repeat;}
+
+/* text */
+.txt-refer{font-size:10px;color: #fff;}
+
+.navbar-toggle {
+  display: none;
+}
+/* Always apply the floated nav */
+.navbar-nav {
+  float: left;
+  margin: 0;
+}
+.navbar-nav > li {
+  float: left;
+}
+.navbar-nav > li > a {
+  padding: 15px;
+}
+
+/* Redeclare since we override the float above */
+.navbar-nav.navbar-right {
+  float: right;
+}
+
+
+/* gnb */
+.wrap_gnb{height:60px;}
+.wrap_gnb:after{display:block;content:'';clear:both;}
+.navbar-inverse {background: #2f3640;}
+.navbar-nav{height:60px;float:none;width:690px;margin:0px auto;}
+.navbar-inverse .navbar-nav li{height:60px;}
+.navbar-inverse .navbar-nav li > a{display:block;height:60px;padding-top:20px;padding-left:20px;padding-right:20px;background: #2f3640 url(../img/gnb_bar.png) right center no-repeat;font-size:14px;font-family:Nanum Barun Gothic;color:#8d949f;font-weight:bold;}
+.navbar-inverse .navbar-nav li:last-child a{background-image: none;}
+.navbar-inverse .navbar-nav > .active > a{background: #2f3640 url(../img/gnb_bar.png) right center no-repeat;;font-size:14px;font-family:Nanum Barun Gothic;font-weight:bold;}
+.navbar-inverse .navbar-nav > .active > a:hover{background: #2f3640 url(../img/gnb_bar.png) right center no-repeat;} 
+.navbar-right{float:none !important;position: absolute;top:5px;right:10px;}
+
+.navbar-inverse .navbar-brand{width:70px;height:31px;margin:15px 0 0 40px; background: url(../img/logo_hims_s.png) no-repeat;}
+
+/* 좌측 메뉴 */
+.tit_lnb{height:56px;padding-left:20px;border-bottom:1px solid #404652;color:#b3bbc8;line-height:56px;font-size:18px;font-family: 'Nanum Barun Gothic';}
+.list_lnb{}
+.list_lnb > li{padding-left:20px;border-bottom:1px solid #404652;}
+.list_lnb > li > a{display:block;height:40px; color:#b3bbc8;font-size:14px;font-family: 'Nanum Barun Gothic';line-height:40px;}
+.list_lnb > li.active{background: url(../img/bg_lnb.png) left top no-repeat;}
+
+.list_lnb > li.active > a{color: #fff;}
+
+.list_lnb_sub{background:#3d434e;margin-left:-20px;padding:12px 0 12px 20px;}
+.list_lnb_sub > li{}
+.list_lnb_sub > li > a{display:inline-block;height:20px;padding-right:18px;font-size:13px;color:#b3bbc8;}
+.list_lnb_sub > li.active a{background: url(../img/bull_lnb.png) right center no-repeat;color:#fff;}
+
+.box_lnb_bottom{position:absolute;bottom:0;left:0;width:160px;height:120px;}
+.box_lnb_bottom .login_user{display:block;height:40px;padding-left:60px;margin-bottom:20px;background:url(../img/ico_user.png) 10px center no-repeat;font-size:16px;color:#fff;font-family:'Roboto';line-height:40px;}
+.box_lnb_bottom .btn_tablet{display:block;height:60px;padding-left:10px;background:#00b2b2 url(../img/ico_lt.png) 140px center no-repeat;font-size:16px;color:#fff;font-family:'Roboto';line-height:60px;}
+
